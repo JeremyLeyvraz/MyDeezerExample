@@ -14,6 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Clean architecture template"
 include ':app'
-include ':domain'
-include ':data'
-include ':usecase'
