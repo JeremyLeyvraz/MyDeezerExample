@@ -10,7 +10,7 @@ android {
     compileSdk project.compileSdk
 
     defaultConfig {
-        applicationId "com.lj.cleanarchitecturetemplate"
+        applicationId "com.lj.multiplescreensizeexample"
         minSdk project.minSdk
         targetSdk project.targetSdk
         versionCode 1
