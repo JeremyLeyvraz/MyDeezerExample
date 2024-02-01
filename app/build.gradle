@@ -87,6 +87,15 @@ dependencies {
     // Android test
     androidTestImplementation "androidx.test.ext:junit:$android_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+
+
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:$compose_version"
+    implementation "androidx.activity:activity-compose:$compose_version"
+    implementation "com.google.android.exoplayer:exoplayer-core:2.19.1"
+    implementation "com.google.android.exoplayer:exoplayer-ui:2.19.1"
+
 }
 
 apply plugin: "io.gitlab.arturbosch.detekt"
