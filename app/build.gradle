@@ -63,6 +63,14 @@ dependencies {
     implementation "androidx.compose.foundation:foundation:$compose_version"
     implementation "io.coil-kt:coil-compose:$coil_compose"
 
+
+
+    implementation "androidx.compose.material3:material3:1.0.1"
+    implementation "androidx.compose.material3:material3-window-size-class:1.0.1"
+
+
+
+
     // Hilt dependencies
     implementation "androidx.hilt:hilt-navigation-compose:$nav_compose_version"
     implementation "com.google.dagger:hilt-android:$hilt_version"
