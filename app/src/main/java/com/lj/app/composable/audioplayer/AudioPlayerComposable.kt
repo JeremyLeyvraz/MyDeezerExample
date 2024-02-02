@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Slider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.PlayArrow
@@ -32,9 +33,10 @@ import com.lj.app.R
 
 @Composable
 fun AudioPlayerComposable() {
-    var exoPlayer: ExoPlayer? by remember { mutableStateOf(null) }
 
     val context = LocalContext.current
+
+    var exoPlayer: ExoPlayer? by remember { mutableStateOf(null) }
 
     DisposableEffect(context) {
         exoPlayer = SimpleExoPlayer.Builder(context).build()
@@ -47,7 +49,6 @@ fun AudioPlayerComposable() {
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
             .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -60,6 +61,7 @@ fun AudioPlayerComposable() {
                         DefaultDataSourceFactory(context, "YourAppName")
                     ).createMediaSource(MediaItem.fromUri("android.resource://${context.packageName}/${R.raw.hollow}")))
                 exoPlayer?.prepare()
+                exoPlayer?.volume = .5F
                 exoPlayer?.playWhenReady = true
             } else {
                 exoPlayer?.playWhenReady = false
@@ -79,6 +81,20 @@ fun AudioPlayerComposable() {
             isPlaying = false
         }) {
             Icon(Icons.Default.Clear, contentDescription = null, tint = Color.Black)
+        }
+
+        var volume by remember { mutableStateOf(0.5f) }
+
+        volume?.let {
+            Slider(
+                value = it,
+                onValueChange = {
+                    volume = it
+                    exoPlayer?.volume = volume as Float
+                },
+                steps = 10,
+                valueRange = 0f..1f
+            )
         }
     }
 }

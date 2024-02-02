@@ -4,6 +4,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,7 +25,7 @@ fun MainNavigation(windowSizeClass: WindowSizeClass) {
         composable(HOME_DESTINATION)
         {
             val viewModel = hiltViewModel<HelloViewModel>()
-            viewModel.init()
+            viewModel.init(LocalContext.current)
             when (windowSizeClass.widthSizeClass) {
                 WindowWidthSizeClass.Compact -> {
                     HelloWorldCompactComposable(windowSizeClass, viewModel)

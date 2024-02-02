@@ -1,6 +1,13 @@
 package com.lj.app.composable
 
+import android.content.Context
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.SimpleExoPlayer
 import com.lj.app.model.Album
 import com.lj.app.model.Playlist
 import com.lj.app.model.Song
@@ -20,9 +27,13 @@ class HelloViewModel @Inject constructor(): ViewModel() {
 
     lateinit var currentSong: Song
 
+    var exoPlayer: ExoPlayer? = null
+
+    fun init(context: Context) {
+
+        exoPlayer = SimpleExoPlayer.Builder(context).build()
 
 
-    fun init() {
         playlist.add(Song(album1.id, "hollow", "Hollow"))
         playlist.add(Song(album2.id, "sutekidane", "Suteki Da Ne"))
 
