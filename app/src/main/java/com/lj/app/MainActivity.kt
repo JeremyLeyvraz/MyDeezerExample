@@ -14,9 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Text
@@ -37,6 +35,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.lj.app.navigation.MainNavigation
 import com.lj.app.ui.theme.TemplateTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -61,80 +60,5 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp(windowSizeClass: WindowSizeClass) {
-    when (windowSizeClass.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> {
-            CompactUI()
-        }
-        else -> {
-            ExpandedUI()
-        }
-    }
-}
-
-@Composable
-fun CompactUI() {
-    Text(text = "Compact")
-
-    AudioPlayer()
-}
-
-@Composable
-fun ExpandedUI() {
-    Text(text = "Expanded")
-}
-
-
-
-
-@Composable
-fun AudioPlayer() {
-    var exoPlayer: ExoPlayer? by remember { mutableStateOf(null) }
-
-    val context = LocalContext.current
-
-    DisposableEffect(context) {
-        exoPlayer = SimpleExoPlayer.Builder(context).build()
-        onDispose {
-            exoPlayer?.release()
-        }
-    }
-
-    var isPlaying by remember { mutableStateOf(false) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        IconButton(onClick = {
-            isPlaying = !isPlaying
-            if (isPlaying) {
-                exoPlayer?.setMediaSource(
-                    ProgressiveMediaSource.Factory(
-                        DefaultDataSourceFactory(context, "YourAppName")
-                    ).createMediaSource(MediaItem.fromUri("android.resource://${context.packageName}/${R.raw.hollow}")))
-                exoPlayer?.prepare()
-                exoPlayer?.playWhenReady = true
-            } else {
-                exoPlayer?.playWhenReady = false
-            }
-        }) {
-            Icon(
-                if (isPlaying) Icons.Default.Refresh else Icons.Default.PlayArrow,
-                contentDescription = null,
-                tint = Color.Black
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        IconButton(onClick = {
-            exoPlayer?.stop()
-            isPlaying = false
-        }) {
-            Icon(Icons.Default.Clear, contentDescription = null, tint = Color.Black)
-        }
-    }
+    MainNavigation(windowSizeClass)
 }
