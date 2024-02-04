@@ -6,6 +6,7 @@ import java.util.UUID
 class Playlist(var name: String = "Final Fantasy") {
 
     val guid = UUID.randomUUID().toString()
+    val image = R.drawable.finalfantasy
 
     /***
      * Return a play list of type Music data class

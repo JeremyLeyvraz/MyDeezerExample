@@ -5,11 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
+import androidx.core.app.NotificationCompat
+import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.lj.app.R
 import com.lj.app.model.Playlist
 
 class PlayerService: Service() {
@@ -27,30 +27,66 @@ class PlayerService: Service() {
         mediaSession?.setCallback(MediaSessionCallback())
         mediaSession?.isActive = true
 
-        exoPlayer?.setMediaSource(
-            ProgressiveMediaSource.Factory(
-                DefaultDataSourceFactory(this.applicationContext, "YourAppName")
-            ).createMediaSource(MediaItem.fromUri("android.resource://${this.applicationContext.packageName}/${R.raw.hollow}")))
+//        exoPlayer?.setMediaSource(
+//            ProgressiveMediaSource.Factory(
+//                DefaultDataSourceFactory(this.applicationContext, "YourAppName")
+//            ).createMediaSource(MediaItem.fromUri("android.resource://${this.applicationContext.packageName}/${R.raw.hollow}")))
+        exoPlayer?.repeatMode = Player.REPEAT_MODE_ALL
         exoPlayer?.prepare()
-        exoPlayer?.volume = .5F
+        //exoPlayer?.volume = 1.0F
 
-//        exoPlayer?.addListener(object : Player.EventListener {
-//            // Ajoutez des écouteurs d'événements ExoPlayer si nécessaire
-//        })
+
+        val playlist = Playlist()
+        playlist.getPlayList().forEach {
+            val path = "android.resource://" + packageName + "/" + it.music
+            val mediaItem = MediaItem.Builder()
+                .setMediaId(it.name)
+                .setUri(Uri.parse(path))
+                .build()
+            exoPlayer?.addMediaItem(mediaItem)
+        }
+
+        exoPlayer?.addListener(object : Player.Listener {
+            override fun onPositionDiscontinuity(reason: Int) {
+                super.onPositionDiscontinuity(reason)
+                // La position a changé, ce qui peut indiquer le changement de la musique en cours de lecture
+                // Vous pouvez vérifier le nouvel indice de fenêtre et traiter en conséquence
+                val windowIndex = exoPlayer!!.currentWindowIndex
+                // Faites quelque chose avec le nouvel indice de fenêtre
+            }
+
+            override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                super.onMediaItemTransition(mediaItem, reason)
+                // MediaItem a changé, ce qui signifie que la piste de musique a changé
+                // Vous pouvez récupérer des informations sur le nouveau MediaItem, par exemple, son URI, son titre, etc.
+                mediaItem?.let {
+                    val responseIntent = Intent()
+                    responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
+                    responseIntent.putExtra("musicId", mediaItem.mediaId)
+
+                    sendBroadcast(responseIntent)
+                }
+            }
+        })
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         handleIntent(intent)
-        return START_NOT_STICKY
+        return START_REDELIVER_INTENT
     }
 
     private fun handleIntent(intent: Intent?) {
         when (intent?.action) {
             ACTION_PLAY -> {
+                val musicId = intent.getStringExtra("musicId")
                 // Mettez en pause la lecture actuelle
+                val index = getIndex(musicId!!)
+                exoPlayer?.seekTo(index, C.TIME_UNSET)
+                exoPlayer?.play()
                 exoPlayer?.playWhenReady = true
             }
             ACTION_PAUSE -> {
+
                 // Mettez en pause la lecture actuelle
                 exoPlayer?.playWhenReady = false
             }
@@ -63,31 +99,27 @@ class PlayerService: Service() {
                 // Chargez et commencez la lecture de la piste suivante
                 exoPlayer?.seekToNextMediaItem()
             }
-            ACTION_LOAD_PLAYLIST -> {
-                // Chargez et commencez la lecture de la piste suivante
-                val playlist = Playlist()
-                playlist.getPlayList().forEach {
-                    val path = "android.resource://" + packageName + "/" + it.music
-                    val mediaItem = MediaItem.Builder()
-                        .setMediaId(it.guid)
-                        .setUri(Uri.parse(path))
-                        .build()
-                    exoPlayer?.addMediaItem(mediaItem)
-                }
-            }
-            ACTION_CHANGE_MUSIC -> {
-                // Chargez et commencez la lecture de la piste suivante
-                val playlist = Playlist()
-                playlist.getPlayList().forEach {
-                    val path = "android.resource://" + packageName + "/" + it.music
-                    val mediaItem = MediaItem.Builder()
-                        .setMediaId(it.guid)
-                        .setUri(Uri.parse(path))
-                        .build()
-                    exoPlayer?.addMediaItem(mediaItem)
-                }
+            ACTION_CURRENT_MUSIC_REQUEST -> {
+                val responseIntent = Intent()
+                responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
+                    responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
+
+                sendBroadcast(responseIntent)
             }
         }
+    }
+
+    private fun getIndex(musidId: String): Int {
+        val count = exoPlayer?.mediaItemCount;
+
+        for (i in 0..count!!) {
+            val media = exoPlayer?.getMediaItemAt(i)
+            if(media?.mediaId == musidId) {
+                return i
+            }
+        }
+
+        return -1
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -124,11 +156,11 @@ class PlayerService: Service() {
     }
 
     companion object {
-        const val ACTION_PLAY = "com.example.ACTION_PLAY"
-        const val ACTION_PAUSE = "com.example.ACTION_PAUSE"
-        const val ACTION_STOP = "com.example.ACTION_STOP"
-        const val ACTION_NEXT = "com.example.ACTION_NEXT"
-        const val ACTION_LOAD_PLAYLIST = "com.example.ACTION_LOAD_PLAYLIST"
-        const val ACTION_CHANGE_MUSIC = "com.example.ACTION_CHANGE_MUSIC"
+        const val ACTION_PLAY = "ACTION_PLAY"
+        const val ACTION_PAUSE = "ACTION_PAUSE"
+        const val ACTION_STOP = "ACTION_STOP"
+        const val ACTION_NEXT = "ACTION_NEXT"
+        const val ACTION_CURRENT_MUSIC_REQUEST = "ACTION_CURRENT_MUSIC_REQUEST"
+        const val ACTION_CURRENT_MUSIC_RESULT = "ACTION_CURRENT_MUSIC_RESULT"
     }
 }

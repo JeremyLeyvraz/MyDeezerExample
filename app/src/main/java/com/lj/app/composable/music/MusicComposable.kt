@@ -1,24 +1,21 @@
 package com.lj.app.composable.music
 
-import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import com.lj.app.service.PlayerService
-import com.lj.app.viewmodel.MusicViewModel
+import com.lj.app.manager.MusicManager
 
 @Composable
-fun MusicComposable(windowSizeClass: WindowSizeClass, viewModel: MusicViewModel) {
+fun MusicComposable(windowSizeClass: WindowSizeClass, viewModel: MusicManager) {
 
     Column {
         Row {
@@ -27,7 +24,6 @@ fun MusicComposable(windowSizeClass: WindowSizeClass, viewModel: MusicViewModel)
         Row {
             Text(text = viewModel.musicId)
         }
-
         Row {
             IconButton(onClick = {
                 viewModel.play()
@@ -39,7 +35,17 @@ fun MusicComposable(windowSizeClass: WindowSizeClass, viewModel: MusicViewModel)
                 )
             }
         }
-
+        Row {
+            IconButton(onClick = {
+                viewModel.pause()
+            }) {
+                Icon(
+                    Icons.Default.Refresh,
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
+        }
         Row {
             IconButton(onClick = {
                 viewModel.stop()
@@ -51,10 +57,6 @@ fun MusicComposable(windowSizeClass: WindowSizeClass, viewModel: MusicViewModel)
                 )
             }
         }
-
-
-
-
     }
 
     /**
