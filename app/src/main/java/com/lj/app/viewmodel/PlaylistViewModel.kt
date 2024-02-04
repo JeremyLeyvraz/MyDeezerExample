@@ -11,6 +11,8 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
 
     val playlist = Playlist()
 
+    val guid = playlist.guid
+
     fun getMusics(): List<Music> {
         return playlist.getPlayList()
     }

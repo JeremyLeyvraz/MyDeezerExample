@@ -2,6 +2,7 @@ package com.lj.app.navigation
 
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -36,11 +37,17 @@ fun MainNavigation(windowSizeClass: WindowSizeClass) {
 //            viewModel.init(LocalContext.current)
             PlaylistComposable(windowSizeClass, navController, viewModel)
         }
-        composable("$MUSIC_DESTINATION/{param}")
+        composable("$MUSIC_DESTINATION/{playlistId}/{musicId}")
         {
+            val playlistId = it.arguments?.getString("playlistId")
+            val musicId = it.arguments?.getString("musicId")
             val viewModel = hiltViewModel<MusicViewModel>()
-//            viewModel.init(LocalContext.current)
-            MusicComposable(windowSizeClass, viewModel)
+            playlistId?.let {
+                musicId?.let {
+                    viewModel.init(LocalContext.current, playlistId, musicId)
+                    MusicComposable(windowSizeClass, viewModel)
+                }
+            }
         }
     }
 }

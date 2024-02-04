@@ -11,7 +11,6 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.lj.app.navigation.MUSIC_DESTINATION
-import com.lj.app.navigation.MainNavigation
 import com.lj.app.viewmodel.PlaylistViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,7 +25,7 @@ fun PlaylistComposable(windowSizeClass: WindowSizeClass, navController: NavContr
             LazyColumn {
                 items(viewModel.getMusics()) { item ->
                     Card(onClick = {
-                        navController.navigate(MUSIC_DESTINATION+"/"+item.music)
+                        navController.navigate(MUSIC_DESTINATION+"/"+viewModel.guid+"/"+item.music)
                     }) {
                         Text(text = item.name)
                     }
@@ -34,8 +33,4 @@ fun PlaylistComposable(windowSizeClass: WindowSizeClass, navController: NavContr
             }
         }
     }
-
-
-
-
 }

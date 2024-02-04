@@ -1,16 +1,61 @@
 package com.lj.app.composable.music
 
+import android.content.Intent
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import com.lj.app.service.PlayerService
 import com.lj.app.viewmodel.MusicViewModel
 
 @Composable
 fun MusicComposable(windowSizeClass: WindowSizeClass, viewModel: MusicViewModel) {
 
+    Column {
+        Row {
+            Text(text = viewModel.playlistId)
+        }
+        Row {
+            Text(text = viewModel.musicId)
+        }
+
+        Row {
+            IconButton(onClick = {
+                viewModel.play()
+            }) {
+                Icon(
+                    Icons.Default.PlayArrow,
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
+        }
+
+        Row {
+            IconButton(onClick = {
+                viewModel.stop()
+            }) {
+                Icon(
+                    Icons.Default.Close,
+                    contentDescription = null,
+                    tint = Color.Black
+                )
+            }
+        }
 
 
-    Text(text = "Titre music")
+
+
+    }
 
     /**
      * TODO:

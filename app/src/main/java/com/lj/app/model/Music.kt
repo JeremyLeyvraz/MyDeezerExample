@@ -6,4 +6,5 @@ data class Music(
     val artist: String,
     val music: Int,
     val cover: Int,
+    val guid: String
 )

@@ -2,6 +2,7 @@ package com.lj.app.service
 
 import android.app.Service
 import android.content.Intent
+import android.net.Uri
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
 import com.google.android.exoplayer2.MediaItem
@@ -9,6 +10,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.lj.app.R
+import com.lj.app.model.Playlist
 
 class PlayerService: Service() {
     private var exoPlayer: SimpleExoPlayer? = null
@@ -61,9 +63,29 @@ class PlayerService: Service() {
                 // Chargez et commencez la lecture de la piste suivante
                 exoPlayer?.seekToNextMediaItem()
             }
-            ACTION_PLAYLIST -> {
+            ACTION_LOAD_PLAYLIST -> {
                 // Chargez et commencez la lecture de la piste suivante
-                exoPlayer?.seekToNextMediaItem()
+                val playlist = Playlist()
+                playlist.getPlayList().forEach {
+                    val path = "android.resource://" + packageName + "/" + it.music
+                    val mediaItem = MediaItem.Builder()
+                        .setMediaId(it.guid)
+                        .setUri(Uri.parse(path))
+                        .build()
+                    exoPlayer?.addMediaItem(mediaItem)
+                }
+            }
+            ACTION_CHANGE_MUSIC -> {
+                // Chargez et commencez la lecture de la piste suivante
+                val playlist = Playlist()
+                playlist.getPlayList().forEach {
+                    val path = "android.resource://" + packageName + "/" + it.music
+                    val mediaItem = MediaItem.Builder()
+                        .setMediaId(it.guid)
+                        .setUri(Uri.parse(path))
+                        .build()
+                    exoPlayer?.addMediaItem(mediaItem)
+                }
             }
         }
     }
@@ -106,6 +128,7 @@ class PlayerService: Service() {
         const val ACTION_PAUSE = "com.example.ACTION_PAUSE"
         const val ACTION_STOP = "com.example.ACTION_STOP"
         const val ACTION_NEXT = "com.example.ACTION_NEXT"
-        const val ACTION_PLAYLIST = "com.example.ACTION_PLAYLIST"
+        const val ACTION_LOAD_PLAYLIST = "com.example.ACTION_LOAD_PLAYLIST"
+        const val ACTION_CHANGE_MUSIC = "com.example.ACTION_CHANGE_MUSIC"
     }
 }
