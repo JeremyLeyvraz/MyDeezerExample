@@ -1,13 +1,26 @@
 package com.lj.app.model
 
-class Playlist(var name: String = "Playlist") {
+import com.lj.app.R
 
+class Playlist(var name: String = "Final Fantasy") {
 
-    var songs : List<Song> = mutableListOf()
-
-    fun add(song: Song) {
-        songs = songs.plus(song)
+    /***
+     * Return a play list of type Music data class
+     */
+    fun getPlayList(): List<Music> {
+        return listOf(
+            Music(
+                name = "Hollow",
+                artist = "Final Fantasy 7 Remake",
+                cover = R.drawable.album1,
+                music = R.raw.hollow
+            ),
+            Music(
+                name = "Suteki Da Ne",
+                artist = "Final Fantasy X",
+                cover = R.drawable.album2,
+                music = R.raw.sutekidane
+            ),
+        )
     }
-
-    fun getSong(albumId: Int): Song = songs.first { it.albumId == albumId }
 }
