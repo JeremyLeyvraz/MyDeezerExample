@@ -1,8 +1,12 @@
 package com.lj.app.service
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
@@ -10,6 +14,7 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.lj.app.R
 import com.lj.app.model.Playlist
 
 class PlayerService: Service() {
@@ -72,6 +77,7 @@ class PlayerService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         handleIntent(intent)
+        startForeground(1, createNotification())
         return START_REDELIVER_INTENT
     }
 
@@ -120,6 +126,28 @@ class PlayerService: Service() {
         }
 
         return -1
+    }
+
+    private fun createNotification(): Notification {
+        val notificationChannelId = "foreground_service_channel"
+
+        // Create a notification channel if the Android version is Oreo or higher
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the NotificationChannel
+            val channel = NotificationChannel(
+                notificationChannelId,
+                "Foreground Service Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        return NotificationCompat.Builder(this, notificationChannelId)
+            .setContentTitle("Foreground Service Example")
+            .setContentText("Running...")
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .build()
     }
 
     override fun onBind(intent: Intent?): IBinder? {
