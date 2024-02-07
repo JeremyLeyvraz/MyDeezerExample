@@ -8,10 +8,13 @@ import androidx.compose.material3.*
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -76,7 +79,7 @@ class MainActivity : ComponentActivity() {
         startService(serviceIntent)
 
         setContent {
-            TemplateTheme {
+            TemplateTheme(darkTheme = true) {
                 val windowSizeClass = calculateWindowSizeClass(this)
                 MyApp(windowSizeClass = windowSizeClass)
             }
@@ -86,5 +89,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MyApp(windowSizeClass: WindowSizeClass) {
-    MainNavigation(windowSizeClass)
+    Surface(
+        color = Color.Black,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        MainNavigation(windowSizeClass)
+    }
 }
