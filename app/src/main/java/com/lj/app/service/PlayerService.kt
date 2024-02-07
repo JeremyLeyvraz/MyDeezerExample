@@ -7,6 +7,7 @@ import android.app.Service
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
@@ -14,8 +15,14 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.Timeline
 import com.lj.app.R
 import com.lj.app.model.Playlist
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class PlayerService: Service() {
     private var exoPlayer: SimpleExoPlayer? = null
@@ -52,24 +59,48 @@ class PlayerService: Service() {
         }
 
         exoPlayer?.addListener(object : Player.Listener {
-            override fun onPositionDiscontinuity(reason: Int) {
-                super.onPositionDiscontinuity(reason)
-                // La position a changé, ce qui peut indiquer le changement de la musique en cours de lecture
-                // Vous pouvez vérifier le nouvel indice de fenêtre et traiter en conséquence
-                val windowIndex = exoPlayer!!.currentWindowIndex
-                // Faites quelque chose avec le nouvel indice de fenêtre
-            }
+
+            private var currentPositionJob: Job? = null
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 super.onMediaItemTransition(mediaItem, reason)
                 // MediaItem a changé, ce qui signifie que la piste de musique a changé
                 // Vous pouvez récupérer des informations sur le nouveau MediaItem, par exemple, son URI, son titre, etc.
                 mediaItem?.let {
-                    val responseIntent = Intent()
+                    var responseIntent = Intent()
                     responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
                     responseIntent.putExtra("musicId", mediaItem.mediaId)
-
                     sendBroadcast(responseIntent)
+
+                    responseIntent = Intent()
+                    responseIntent.action = ACTION_DURATION
+                    responseIntent.putExtra("duration", exoPlayer?.duration)
+                    sendBroadcast(responseIntent)
+                }
+            }
+
+            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+                super.onPlayerStateChanged(playWhenReady, playbackState)
+                if (playbackState == Player.STATE_READY) {
+                    var responseIntent = Intent()
+                    responseIntent.action = ACTION_DURATION
+                    responseIntent.putExtra("duration", exoPlayer?.duration)
+                    sendBroadcast(responseIntent)
+
+                    currentPositionJob?.cancel()
+                    // Lancer une coroutine pour mettre à jour la durée courante à intervalles réguliers
+                    currentPositionJob = CoroutineScope(Dispatchers.Main).launch {
+
+                        while (exoPlayer?.currentPosition!! < exoPlayer?.duration!!) {
+                            exoPlayer?.let {
+                                responseIntent = Intent()
+                                responseIntent.action = ACTION_CURRENT_POSITION
+                                responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
+                                sendBroadcast(responseIntent)
+                            }
+                            delay(1000)
+                        }
+                    }
                 }
             }
         })
@@ -190,5 +221,7 @@ class PlayerService: Service() {
         const val ACTION_NEXT = "ACTION_NEXT"
         const val ACTION_CURRENT_MUSIC_REQUEST = "ACTION_CURRENT_MUSIC_REQUEST"
         const val ACTION_CURRENT_MUSIC_RESULT = "ACTION_CURRENT_MUSIC_RESULT"
+        const val ACTION_DURATION = "ACTION_DURATION"
+        const val ACTION_CURRENT_POSITION = "ACTION_CURRENT_POSITION"
     }
 }

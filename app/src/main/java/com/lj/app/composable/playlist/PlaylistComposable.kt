@@ -1,10 +1,11 @@
 package com.lj.app.composable.playlist
 
-import android.os.Build.VERSION.SDK_INT
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,11 +19,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +37,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
-import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import com.lj.app.R
 import com.lj.app.composable.image.DisplayImage
@@ -100,7 +103,7 @@ private fun Compact(navController: NavController, viewModel: PlaylistViewModel) 
 private fun Medium(navController: NavController, viewModel: PlaylistViewModel) {
     Row {
         Surface(modifier = Modifier.fillMaxHeight()) {
-            Column(modifier = Modifier.background(Color.Black)) {
+            Column(modifier = Modifier.background(Color.Black).weight(0.2f)) {
                 // DisplayImage with aspect ratio 1:1
                 DisplayImage(albumId = viewModel.image, modifier = Modifier
                     .fillMaxHeight()
@@ -142,6 +145,38 @@ private fun Medium(navController: NavController, viewModel: PlaylistViewModel) {
         }
     }
 }
+
+@Composable
+fun SliderWithMinMaxAndValue(
+    sliderValue: Float,
+    onSliderValueChange: (Float) -> Unit,
+    minValue: Float,
+    maxValue: Float,
+) {
+        Slider(
+            value = sliderValue,
+            onValueChange = { newValue ->
+                onSliderValueChange(newValue)
+            },
+            valueRange = minValue..maxValue,
+            steps = 100,
+            colors = SliderDefaults.colors(
+                thumbColor = Color.Green,
+                activeTrackColor = Color.Green,
+                inactiveTrackColor = Color.LightGray
+            ),
+            modifier = Modifier.fillMaxHeight(),
+        )
+//        Spacer(modifier = Modifier.height(8.dp))
+//        Row(
+//            modifier = Modifier.fillMaxHeight(),
+//            horizontalArrangement = Arrangement.SpaceBetween
+//        ) {
+//            Text(text = minValue.toString())
+//            Text(text = sliderValue.toString())
+//            Text(text = maxValue.toString())
+//        }
+    }
 
 
 

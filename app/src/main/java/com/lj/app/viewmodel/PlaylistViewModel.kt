@@ -19,6 +19,8 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
     private val playlist = Playlist()
 
     var currentMusicName = mutableStateOf("")
+    var duration = mutableStateOf(0L)
+    var currentPosition = mutableStateOf(0L)
 
     val name = playlist.name
     val image = playlist.image
@@ -28,6 +30,14 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
             if (intent?.action == PlayerService.ACTION_CURRENT_MUSIC_RESULT) {
                 val responseData = intent.getStringExtra("musicId")
                 currentMusicName.value = responseData!!
+            }
+            if (intent?.action == PlayerService.ACTION_DURATION) {
+                val responseData = intent.getLongExtra("duration", 0L)
+                duration.value = responseData
+            }
+            if (intent?.action == PlayerService.ACTION_CURRENT_POSITION) {
+                val responseData = intent.getLongExtra("currentPosition", 0L)
+                currentPosition.value = responseData
             }
         }
     }
@@ -43,6 +53,8 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
     fun init(context: Context) {
         this.context = context
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_CURRENT_MUSIC_RESULT))
+        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_DURATION))
+        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_CURRENT_POSITION))
     }
 
     fun play(musicId: String) {
