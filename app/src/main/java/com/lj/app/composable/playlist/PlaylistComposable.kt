@@ -102,8 +102,8 @@ private fun Compact(navController: NavController, viewModel: PlaylistViewModel) 
 @Composable
 private fun Medium(navController: NavController, viewModel: PlaylistViewModel) {
     Row {
-        Surface(modifier = Modifier.fillMaxHeight()) {
-            Column(modifier = Modifier.background(Color.Black).weight(0.2f)) {
+        Surface(modifier = Modifier.fillMaxWidth(0.3F)) {
+            Column(modifier = Modifier.background(Color.Black)) {
                 // DisplayImage with aspect ratio 1:1
                 DisplayImage(albumId = viewModel.image, modifier = Modifier
                     .fillMaxHeight()
@@ -124,6 +124,21 @@ private fun Medium(navController: NavController, viewModel: PlaylistViewModel) {
                         .fillMaxHeight()
                         .align(Alignment.CenterHorizontally)
                         .weight(0.2f) // Adjust the weight as needed for proper distribution
+                )
+                Slider(
+                    value = 0.5F, // Mettre à jour pour changer le slider
+                    onValueChange = { newValue ->
+                        //onSliderValueChange(newValue)
+                    },
+                    valueRange = 0F..1F,
+                    steps = 100,
+                    enabled = true,
+                    colors = SliderDefaults.colors(
+                        thumbColor = Color.Green,
+                        activeTrackColor = Color.Green,
+                        inactiveTrackColor = Color.LightGray
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
