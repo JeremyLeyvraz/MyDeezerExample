@@ -15,12 +15,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -42,6 +39,7 @@ import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.ImageDecoderDecoder
 import com.lj.app.R
+import com.lj.app.composable.image.CustomIcon
 import com.lj.app.composable.image.DisplayImage
 import com.lj.app.model.Music
 import com.lj.app.viewmodel.PlaylistViewModel
@@ -116,39 +114,57 @@ private fun Compact(navController: NavController, viewModel: PlaylistViewModel) 
                 .padding(8.dp)
         ) {
             Spacer(modifier = Modifier.weight(1f))
-            Card(modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp) ) {
+            Card(modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp) ) {
 
                 Row(modifier = Modifier.background(Color(55,0,179))) {
                     // Icône en bas, superposée à la colonne
                     IconButton(
-                        onClick = { viewModel.pause() },
+                        onClick =
+                        {
+                            if(viewModel.isPause.value) {
+//                                viewModel.play(viewModel.currentMusicName.value)
+                                viewModel.pause()
+                            } else {
+                                viewModel.pause()
+                            }
+                        },
                         modifier = Modifier
                             .padding(8.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Lecture",
-                            tint = Color.White
-                        )
+                        if(viewModel.isPause.value) {
+                            CustomIcon(icon = R.drawable.btn_jouer, size = 48)
+                        } else {
+                            CustomIcon(icon = R.drawable.btn_pause, size = 48)
+                        }
+//                        Icon(
+//                            imageVector = Icons.Default.PlayArrow,
+//                            contentDescription = "Lecture",
+//                            tint = Color.White
+//                        )
                     }
                     Text(
-                        text = "LECTEUR",
+                        text = viewModel.currentMusicName.value,
                         style = MaterialTheme.typography.labelLarge.copy(
                             color = Color.White,
                             fontWeight = FontWeight.Bold
                         ),
-                        modifier = Modifier.padding(8.dp).weight(1f)
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .weight(1f)
                     )// Icône en bas, superposée à la colonne
                     IconButton(
                         onClick = { viewModel.next() },
                         modifier = Modifier
                             .padding(8.dp)
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.PlayArrow,
-                            contentDescription = "Lecture",
-                            tint = Color.White
-                        )
+                        CustomIcon(icon = R.drawable.btn_suivant, size = 48)
+//                        Icon(
+//                            imageVector = Icons.Default.PlayArrow,
+//                            contentDescription = "Lecture",
+//                            tint = Color.White
+//                        )
                     }
                 }
             }

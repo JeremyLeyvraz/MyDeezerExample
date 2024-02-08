@@ -7,7 +7,6 @@ import android.app.Service
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.core.app.NotificationCompat
@@ -15,7 +14,6 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
-import com.google.android.exoplayer2.Timeline
 import com.lj.app.R
 import com.lj.app.model.Playlist
 import kotlinx.coroutines.CoroutineScope

@@ -17,13 +17,17 @@ import javax.inject.Inject
 class PlaylistViewModel @Inject constructor(): ViewModel() {
 
     private val playlist = Playlist()
+    @SuppressLint("StaticFieldLeak")
+    var context: Context? = null
 
     var currentMusicName = mutableStateOf("")
+
+
+
     var duration = mutableStateOf(0L)
     var currentPosition = mutableStateOf(0L)
 
     var isPlaying = mutableStateOf(false)
-
     var isPause = mutableStateOf(false)
 
     val name = playlist.name
@@ -50,9 +54,6 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         return playlist.getPlayList()
     }
 
-    @SuppressLint("StaticFieldLeak")
-    var context: Context? = null
-
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun init(context: Context) {
         this.context = context
@@ -67,6 +68,7 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         playIntent.putExtra("musicId", musicId)
         context?.startService(playIntent)
         isPlaying.value = true
+        isPause.value = false
     }
 
     fun pause() {
@@ -86,6 +88,8 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         val nextIntent = Intent(context, PlayerService::class.java)
         nextIntent.action = PlayerService.ACTION_NEXT
         context?.startService(nextIntent)
+        isPlaying.value = true
+        isPause.value = false
     }
 
 }
