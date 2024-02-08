@@ -123,9 +123,13 @@ class PlayerService: Service() {
                 exoPlayer?.playWhenReady = true
             }
             ACTION_PAUSE -> {
-
-                // Mettez en pause la lecture actuelle
-                exoPlayer?.playWhenReady = false
+                if(exoPlayer!!.isPlaying) {
+                    //exoPlayer!!.pause()
+                    exoPlayer?.playWhenReady = false
+                } else {
+                    //exoPlayer!!.play()
+                    exoPlayer?.playWhenReady = true
+                }
             }
             ACTION_STOP -> {
                 // Arrêtez la lecture actuelle
@@ -135,6 +139,7 @@ class PlayerService: Service() {
             ACTION_NEXT -> {
                 // Chargez et commencez la lecture de la piste suivante
                 exoPlayer?.seekToNextMediaItem()
+                exoPlayer?.play()
             }
             ACTION_CURRENT_MUSIC_REQUEST -> {
                 val responseIntent = Intent()

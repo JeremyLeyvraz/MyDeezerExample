@@ -22,6 +22,10 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
     var duration = mutableStateOf(0L)
     var currentPosition = mutableStateOf(0L)
 
+    var isPlaying = mutableStateOf(false)
+
+    var isPause = mutableStateOf(false)
+
     val name = playlist.name
     val image = playlist.image
 
@@ -62,18 +66,26 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         playIntent.action = PlayerService.ACTION_PLAY
         playIntent.putExtra("musicId", musicId)
         context?.startService(playIntent)
+        isPlaying.value = true
     }
 
     fun pause() {
         val pauseIntent = Intent(context, PlayerService::class.java)
         pauseIntent.action = PlayerService.ACTION_PAUSE
         context?.startService(pauseIntent)
+        isPause.value = !isPause.value
     }
 
     fun stop() {
         val stopIntent = Intent(context, PlayerService::class.java)
         stopIntent.action = PlayerService.ACTION_STOP
         context?.startService(stopIntent)
+    }
+
+    fun next() {
+        val nextIntent = Intent(context, PlayerService::class.java)
+        nextIntent.action = PlayerService.ACTION_NEXT
+        context?.startService(nextIntent)
     }
 
 }
