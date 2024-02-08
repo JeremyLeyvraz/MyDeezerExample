@@ -20,6 +20,7 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
     @SuppressLint("StaticFieldLeak")
     var context: Context? = null
 
+    var currentMusic = mutableStateOf<Music?>(null)
     var currentMusicName = mutableStateOf("")
 
 
@@ -38,6 +39,7 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
             if (intent?.action == PlayerService.ACTION_CURRENT_MUSIC_RESULT) {
                 val responseData = intent.getStringExtra("musicId")
                 currentMusicName.value = responseData!!
+                currentMusic.value = getMusics().firstOrNull { it.name == currentMusicName.value }
             }
             if (intent?.action == PlayerService.ACTION_DURATION) {
                 val responseData = intent.getLongExtra("duration", 0L)
@@ -91,5 +93,4 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         isPlaying.value = true
         isPause.value = false
     }
-
 }

@@ -115,8 +115,8 @@ private fun Compact(navController: NavController, viewModel: PlaylistViewModel) 
         ) {
             Spacer(modifier = Modifier.weight(1f))
             Card(modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp) ) {
+                .padding(bottom = 8.dp)
+                .fillMaxWidth()) {
 
                 Row(modifier = Modifier.background(Color(55,0,179))) {
                     // Icône en bas, superposée à la colonne
@@ -124,54 +124,53 @@ private fun Compact(navController: NavController, viewModel: PlaylistViewModel) 
                         onClick =
                         {
                             if(viewModel.isPause.value) {
-//                                viewModel.play(viewModel.currentMusicName.value)
                                 viewModel.pause()
                             } else {
                                 viewModel.pause()
                             }
                         },
-                        modifier = Modifier
-                            .padding(8.dp)
+                        modifier = Modifier.padding(8.dp)
                     ) {
                         if(viewModel.isPause.value) {
                             CustomIcon(icon = R.drawable.btn_jouer, size = 48)
                         } else {
                             CustomIcon(icon = R.drawable.btn_pause, size = 48)
                         }
-//                        Icon(
-//                            imageVector = Icons.Default.PlayArrow,
-//                            contentDescription = "Lecture",
-//                            tint = Color.White
-//                        )
                     }
-                    Text(
-                        text = viewModel.currentMusicName.value,
-                        style = MaterialTheme.typography.labelLarge.copy(
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .weight(1f)
-                    )// Icône en bas, superposée à la colonne
+
+                    viewModel.currentMusic.value?.let {
+                        Box(modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .weight(1f)) {
+                            Column {
+                                Text(
+                                    text = it.name,
+                                    style = MaterialTheme.typography.labelLarge.copy(
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 20.sp,
+                                    )
+                                )
+                                Text(
+                                    text = it.artist,
+                                    style = MaterialTheme.typography.labelLarge.copy(
+                                        color = Color.White,
+                                        fontSize = 14.sp,
+                                    )
+                                )
+                            }
+                        }
+                    }
                     IconButton(
                         onClick = { viewModel.next() },
-                        modifier = Modifier
-                            .padding(8.dp)
+                        modifier = Modifier.padding(8.dp)
                     ) {
                         CustomIcon(icon = R.drawable.btn_suivant, size = 48)
-//                        Icon(
-//                            imageVector = Icons.Default.PlayArrow,
-//                            contentDescription = "Lecture",
-//                            tint = Color.White
-//                        )
                     }
                 }
             }
         }
     }
-    // Card en bas, superposé à la colonne
-
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -236,42 +235,6 @@ private fun Medium(navController: NavController, viewModel: PlaylistViewModel) {
         }
     }
 }
-
-@Composable
-fun SliderWithMinMaxAndValue(
-    sliderValue: Float,
-    onSliderValueChange: (Float) -> Unit,
-    minValue: Float,
-    maxValue: Float,
-) {
-        Slider(
-            value = sliderValue,
-            onValueChange = { newValue ->
-                onSliderValueChange(newValue)
-            },
-            valueRange = minValue..maxValue,
-            steps = 100,
-            colors = SliderDefaults.colors(
-                thumbColor = Color.Green,
-                activeTrackColor = Color.Green,
-                inactiveTrackColor = Color.LightGray
-            ),
-            modifier = Modifier.fillMaxHeight(),
-        )
-//        Spacer(modifier = Modifier.height(8.dp))
-//        Row(
-//            modifier = Modifier.fillMaxHeight(),
-//            horizontalArrangement = Arrangement.SpaceBetween
-//        ) {
-//            Text(text = minValue.toString())
-//            Text(text = sliderValue.toString())
-//            Text(text = maxValue.toString())
-//        }
-    }
-
-
-
-
 
 
 
