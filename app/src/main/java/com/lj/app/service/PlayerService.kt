@@ -37,14 +37,8 @@ class PlayerService: Service() {
         mediaSession?.setCallback(MediaSessionCallback())
         mediaSession?.isActive = true
 
-//        exoPlayer?.setMediaSource(
-//            ProgressiveMediaSource.Factory(
-//                DefaultDataSourceFactory(this.applicationContext, "YourAppName")
-//            ).createMediaSource(MediaItem.fromUri("android.resource://${this.applicationContext.packageName}/${R.raw.hollow}")))
         exoPlayer?.repeatMode = Player.REPEAT_MODE_ALL
         exoPlayer?.prepare()
-        //exoPlayer?.volume = 1.0F
-
 
         val playlist = Playlist()
         playlist.getPlayList().forEach {
@@ -62,8 +56,6 @@ class PlayerService: Service() {
 
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 super.onMediaItemTransition(mediaItem, reason)
-                // MediaItem a changé, ce qui signifie que la piste de musique a changé
-                // Vous pouvez récupérer des informations sur le nouveau MediaItem, par exemple, son URI, son titre, etc.
                 mediaItem?.let {
                     var responseIntent = Intent()
                     responseIntent.action = ACTION_CURRENT_MUSIC_RESULT

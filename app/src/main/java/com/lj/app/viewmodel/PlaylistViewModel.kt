@@ -23,8 +23,6 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
     var currentMusic = mutableStateOf<Music?>(null)
     var currentMusicName = mutableStateOf("")
 
-
-
     var duration = mutableStateOf(0L)
     var currentPosition = mutableStateOf(0L)
 

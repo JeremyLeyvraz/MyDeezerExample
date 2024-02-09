@@ -18,8 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
-import com.google.android.exoplayer2.offline.DownloadService.startForeground
 import com.lj.app.navigation.MainNavigation
 import com.lj.app.service.PlayerService
 import com.lj.app.ui.theme.TemplateTheme
@@ -59,19 +57,11 @@ class MainActivity : ComponentActivity() {
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.FOREGROUND_SERVICE),
                 123
             )
-            //return
         }
         notificationManager.notify(notificationId, notification)
 
