@@ -5,8 +5,8 @@
 
 
 ## Bugs
-- Fix clic on notification: reopen with current state
-
+- Foreground notification: clic must reopen with current state
+- Foreground notification: no notification for Android 14
 
 
 
