@@ -29,7 +29,7 @@ import androidx.navigation.NavController
 import com.lj.app.R
 import com.lj.app.composable.image.CustomIcon
 import com.lj.app.composable.image.DisplayImage
-import com.lj.app.composable.music.MusicComposable
+import com.lj.app.composable.music.MusicItemComposable
 import com.lj.app.viewmodel.PlaylistViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,7 +70,7 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
                     Surface(
                         modifier = Modifier.background(Color.Black),
                         onClick = { viewModel.play(item.name) }) {
-                        MusicComposable(item, viewModel.currentMusicName.value == item.name)
+                        MusicItemComposable(item, viewModel.currentMusicName.value == item.name)
                     }
                     // Add a separator if the item is not the last one
                     if (index < viewModel.getMusics().size - 1) {

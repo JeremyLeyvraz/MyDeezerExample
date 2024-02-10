@@ -6,6 +6,7 @@
 
 ## Bugs
 - Foreground notification: (fermer app + clic notif) plusieurs fois => clic sur back plusieurs fois possible => vérifier la pile des activités
+- MusicCompactComposable: faire pause sur playlistComposable puis naviguer vers music composable => image non visible (entre autres)
 
 
 

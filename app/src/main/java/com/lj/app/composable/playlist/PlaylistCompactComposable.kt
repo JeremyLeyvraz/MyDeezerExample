@@ -29,7 +29,8 @@ import androidx.navigation.NavController
 import com.lj.app.R
 import com.lj.app.composable.image.CustomIcon
 import com.lj.app.composable.image.DisplayImage
-import com.lj.app.composable.music.MusicComposable
+import com.lj.app.composable.music.MusicItemComposable
+import com.lj.app.navigation.MUSIC_DESTINATION
 import com.lj.app.viewmodel.PlaylistViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,7 +59,7 @@ fun PlaylistCompactComposable(navController: NavController, viewModel: PlaylistV
                     Surface(
                         modifier = Modifier.background(Color.Black),
                         onClick = { viewModel.play(item.name) }) {
-                        MusicComposable(item, viewModel.currentMusicName.value == item.name)
+                        MusicItemComposable(item, viewModel.currentMusicName.value == item.name)
                     }
                     // Add a separator if the item is not the last one
                     if (index < viewModel.getMusics().size - 1) {
@@ -88,18 +89,17 @@ fun PlaylistCompactComposable(navController: NavController, viewModel: PlaylistV
             Spacer(modifier = Modifier.weight(1f))
             Card(modifier = Modifier
                 .padding(bottom = 8.dp)
-                .fillMaxWidth()) {
+                .fillMaxWidth(),
+                onClick = {
+                    navController.navigate(MUSIC_DESTINATION)
+                }) {
 
                 Row(modifier = Modifier.background(Color(55,0,179))) {
                     // Icône en bas, superposée à la colonne
                     IconButton(
                         onClick =
                         {
-                            if(viewModel.isPause.value) {
-                                viewModel.pause()
-                            } else {
-                                viewModel.pause()
-                            }
+                            viewModel.pause()
                         },
                         modifier = Modifier.padding(8.dp)
                     ) {

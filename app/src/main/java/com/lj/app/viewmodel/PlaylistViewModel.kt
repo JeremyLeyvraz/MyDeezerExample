@@ -25,6 +25,7 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
 
     var duration = mutableStateOf(0L)
     var currentPosition = mutableStateOf(0L)
+    var progress = mutableStateOf(0f)
 
     var isPlaying = mutableStateOf(false)
     var isPause = mutableStateOf(false)
@@ -46,11 +47,35 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
             if (intent?.action == PlayerService.ACTION_CURRENT_POSITION) {
                 val responseData = intent.getLongExtra("currentPosition", 0L)
                 currentPosition.value = responseData
+                updateProgress()
             }
             if (intent?.action == PlayerService.ACTION_APPLICATION_RESUME_RESULT) {
                 isPlaying.value = currentMusic.value != null
             }
         }
+    }
+
+    private fun updateProgress() {
+        duration.value.let { it ->
+
+            if (it <= 0) {
+                return
+            }
+
+            currentPosition.value.let { pos ->
+                if (pos in 0..it) {
+                    progress.value = (pos.toFloat() / it.toFloat()) * 100
+                }
+
+            }
+        }
+    }
+
+    fun goTo(value: Float) {
+        val playIntent = Intent(context, PlayerService::class.java)
+        playIntent.action = PlayerService.ACTION_GOTO
+        playIntent.putExtra("progress", value)
+        context?.startService(playIntent)
     }
 
     fun getMusics(): List<Music> {

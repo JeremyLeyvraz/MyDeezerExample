@@ -132,6 +132,21 @@ class PlayerService: Service() {
                 exoPlayer?.seekToNextMediaItem()
                 exoPlayer?.play()
             }
+            ACTION_PREVIOUS -> {
+                // Chargez et commencez la lecture de la piste suivante
+                exoPlayer?.seekToNextMediaItem()
+                exoPlayer?.play()
+            }
+            ACTION_GOTO -> {
+                // Chargez et commencez la lecture de la piste suivante
+                val time = intent.getFloatExtra("progress", 0f)
+
+                val newTime = time * exoPlayer!!.duration / 100.0
+
+
+
+                exoPlayer?.seekTo(newTime.toLong())
+            }
 //            ACTION_CURRENT_MUSIC_REQUEST -> {
 //                val responseIntent = Intent()
 //                responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
@@ -141,7 +156,8 @@ class PlayerService: Service() {
             ACTION_APPLICATION_RESUME -> {
                 // Send current music ID
                 var responseIntent = Intent()
-                if (exoPlayer!!.isPlaying) {
+                if (exoPlayer!!.isPlaying || exoPlayer!!.currentPosition.toInt() != 0) {
+
                     responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
                     responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
                     sendBroadcast(responseIntent)
@@ -242,11 +258,12 @@ class PlayerService: Service() {
     }
 
     companion object {
+        const val ACTION_GOTO = "ACTION_GOTO"
         const val ACTION_PLAY = "ACTION_PLAY"
         const val ACTION_PAUSE = "ACTION_PAUSE"
         const val ACTION_STOP = "ACTION_STOP"
         const val ACTION_NEXT = "ACTION_NEXT"
-//        const val ACTION_CURRENT_MUSIC_REQUEST = "ACTION_CURRENT_MUSIC_REQUEST"
+        const val ACTION_PREVIOUS = "ACTION_PREVIOUS"
         const val ACTION_CURRENT_MUSIC_RESULT = "ACTION_CURRENT_MUSIC_RESULT"
         const val ACTION_DURATION = "ACTION_DURATION"
         const val ACTION_CURRENT_POSITION = "ACTION_CURRENT_POSITION"

@@ -10,11 +10,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 
 @Composable
-fun CustomIcon(@DrawableRes icon: Int, size: Int) {
+fun CustomIcon(@DrawableRes icon: Int, size: Int, modifier: Modifier = Modifier) {
     val customIcon: Painter = painterResource(icon)
     Image(
         painter = customIcon,
         contentDescription = "Custom Icon",
-        modifier = Modifier.size(size.dp)
+        modifier = modifier.size(size.dp)
     )
 }
