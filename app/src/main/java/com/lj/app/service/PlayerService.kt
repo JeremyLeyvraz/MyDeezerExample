@@ -3,6 +3,7 @@ package com.lj.app.service
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
 import android.net.Uri
@@ -14,6 +15,7 @@ import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.lj.app.MainActivity
 import com.lj.app.R
 import com.lj.app.model.Playlist
 import kotlinx.coroutines.CoroutineScope
@@ -169,10 +171,19 @@ class PlayerService: Service() {
             notificationManager.createNotificationChannel(channel)
         }
 
+        val notificationIntent = Intent(this, MainActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            notificationIntent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
         return NotificationCompat.Builder(this, notificationChannelId)
             .setContentTitle("Foreground Service Example")
             .setContentText("Running...")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentIntent(pendingIntent)
             .build()
     }
 
