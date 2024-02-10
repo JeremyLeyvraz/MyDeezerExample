@@ -133,12 +133,34 @@ class PlayerService: Service() {
                 exoPlayer?.seekToNextMediaItem()
                 exoPlayer?.play()
             }
-            ACTION_CURRENT_MUSIC_REQUEST -> {
-                val responseIntent = Intent()
-                responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
+//            ACTION_CURRENT_MUSIC_REQUEST -> {
+//                val responseIntent = Intent()
+//                responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
+//                    responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
+//                sendBroadcast(responseIntent)
+//            }
+            ACTION_APPLICATION_RESUME -> {
+                // Send current music ID
+                var responseIntent = Intent()
+                if (exoPlayer!!.isPlaying) {
+                    responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
                     responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
+                    sendBroadcast(responseIntent)
 
-                sendBroadcast(responseIntent)
+                    responseIntent = Intent()
+                    responseIntent.action = ACTION_CURRENT_POSITION
+                    responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
+                    sendBroadcast(responseIntent)
+
+                    responseIntent = Intent()
+                    responseIntent.action = ACTION_DURATION
+                    responseIntent.putExtra("duration", exoPlayer?.duration)
+                    sendBroadcast(responseIntent)
+
+                    responseIntent = Intent()
+                    responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
+                    sendBroadcast(responseIntent)
+                }
             }
         }
     }
@@ -225,9 +247,13 @@ class PlayerService: Service() {
         const val ACTION_PAUSE = "ACTION_PAUSE"
         const val ACTION_STOP = "ACTION_STOP"
         const val ACTION_NEXT = "ACTION_NEXT"
-        const val ACTION_CURRENT_MUSIC_REQUEST = "ACTION_CURRENT_MUSIC_REQUEST"
+//        const val ACTION_CURRENT_MUSIC_REQUEST = "ACTION_CURRENT_MUSIC_REQUEST"
         const val ACTION_CURRENT_MUSIC_RESULT = "ACTION_CURRENT_MUSIC_RESULT"
         const val ACTION_DURATION = "ACTION_DURATION"
         const val ACTION_CURRENT_POSITION = "ACTION_CURRENT_POSITION"
+
+
+        const val ACTION_APPLICATION_RESUME = "ACTION_APPLICATION_RESUME"
+        const val ACTION_APPLICATION_RESUME_RESULT = "ACTION_APPLICATION_RESUME_RESULT"
     }
 }

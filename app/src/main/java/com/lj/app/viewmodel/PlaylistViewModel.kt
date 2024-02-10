@@ -47,6 +47,9 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
                 val responseData = intent.getLongExtra("currentPosition", 0L)
                 currentPosition.value = responseData
             }
+            if (intent?.action == PlayerService.ACTION_APPLICATION_RESUME_RESULT) {
+                isPlaying.value = currentMusic.value != null
+            }
         }
     }
 
@@ -60,6 +63,11 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_CURRENT_MUSIC_RESULT))
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_DURATION))
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_CURRENT_POSITION))
+        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_APPLICATION_RESUME_RESULT))
+
+        val playIntent = Intent(context, PlayerService::class.java)
+        playIntent.action = PlayerService.ACTION_APPLICATION_RESUME
+        context.startService(playIntent)
     }
 
     fun play(musicId: String) {
