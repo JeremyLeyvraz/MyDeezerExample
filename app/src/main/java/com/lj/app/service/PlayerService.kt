@@ -30,7 +30,6 @@ class PlayerService: Service() {
 
     override fun onCreate() {
         super.onCreate()
-
         // Initialisez ExoPlayer
         exoPlayer = SimpleExoPlayer.Builder(this).build()
 
@@ -187,7 +186,7 @@ class PlayerService: Service() {
             val channel = NotificationChannel(
                 notificationChannelId,
                 "Foreground Service Channel",
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_LOW
             )
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)

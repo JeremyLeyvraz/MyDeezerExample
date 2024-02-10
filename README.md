@@ -5,8 +5,7 @@
 
 
 ## Bugs
-- Foreground notification: clic must reopen with current state
-- Foreground notification: no notification for Android 14
+- Foreground notification: (fermer app + clic notif) plusieurs fois => clic sur back plusieurs fois possible => vérifier la pile des activités
 
 
 
