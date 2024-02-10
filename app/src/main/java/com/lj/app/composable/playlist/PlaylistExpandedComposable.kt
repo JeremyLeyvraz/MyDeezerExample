@@ -62,7 +62,7 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
             }
         }
 
-        Box(modifier = Modifier.weight(1f)) {
+        Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(8.dp)) {
 
             LazyColumn {
                 itemsIndexed(viewModel.getMusics()) { index, item ->
