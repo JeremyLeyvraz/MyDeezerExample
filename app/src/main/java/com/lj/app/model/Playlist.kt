@@ -3,13 +3,16 @@ package com.lj.app.model
 import com.lj.app.R
 import java.util.UUID
 
-class Playlist(var name: String = "Final Fantasy") {
+/**
+ * Represents a playlist containing music tracks.
+ * @property name The name of the playlist.
+ * @property image The image associated with the playlist.
+ */
+class Playlist(var name: String = "Final Fantasy", var image : Int = R.drawable.finalfantasy) {
 
-    val guid = UUID.randomUUID().toString()
-    val image = R.drawable.finalfantasy
-
-    /***
-     * Return a play list of type Music data class
+    /**
+     * Retrieves the list of music tracks in the playlist.
+     * @return A list of [Music] objects representing the tracks in the playlist.
      */
     fun getPlayList(): List<Music> {
         return listOf(

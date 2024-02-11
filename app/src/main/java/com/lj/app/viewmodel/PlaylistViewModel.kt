@@ -113,12 +113,6 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         isPause.value = !isPause.value
     }
 
-    fun stop() {
-        val stopIntent = Intent(context, PlayerService::class.java)
-        stopIntent.action = PlayerService.ACTION_STOP
-        context?.startService(stopIntent)
-    }
-
     fun next() {
         val nextIntent = Intent(context, PlayerService::class.java)
         nextIntent.action = PlayerService.ACTION_NEXT
