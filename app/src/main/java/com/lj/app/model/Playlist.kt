@@ -19,7 +19,7 @@ class Playlist(var name: String = "Final Fantasy", var image : Int = R.drawable.
             Music(
                 name = "Hollow",
                 artist = "Final Fantasy VII Remake",
-                cover = R.drawable.finalfantasy7remake,
+                cover = R.drawable.finalfantasy7,
                 music = R.raw.hollow,
                 guid = UUID.randomUUID().toString()
             ),
@@ -40,7 +40,7 @@ class Playlist(var name: String = "Final Fantasy", var image : Int = R.drawable.
             Music(
                 name = "Prelude",
                 artist = "Final Fantasy VII Remake",
-                cover = R.drawable.finalfantasy7remake,
+                cover = R.drawable.finalfantasy7,
                 music = R.raw.prelude7,
                 guid = UUID.randomUUID().toString()
             ),
@@ -49,6 +49,34 @@ class Playlist(var name: String = "Final Fantasy", var image : Int = R.drawable.
                 artist = "Leona Lewis",
                 cover = R.drawable.finalfantasy13,
                 music = R.raw.myhands,
+                guid = UUID.randomUUID().toString()
+            ),
+            Music(
+                name = "Eternity",
+                artist = "Final Fantasy X-2",
+                cover = R.drawable.finafantasy102,
+                music = R.raw.eternity,
+                guid = UUID.randomUUID().toString()
+            ),
+            Music(
+                name = "Eyes on me",
+                artist = "Final Fantasy VIII",
+                cover = R.drawable.finalfantasy8,
+                music = R.raw.eyesonme,
+                guid = UUID.randomUUID().toString()
+            ),
+            Music(
+                name = "Main theme",
+                artist = "Final Fantasy XII",
+                cover = R.drawable.finalfantasy12,
+                music = R.raw.mainthemexii,
+                guid = UUID.randomUUID().toString()
+            ),
+            Music(
+                name = "To Zanarkand",
+                artist = "Final Fantasy X",
+                cover = R.drawable.finalfantasy10,
+                music = R.raw.tozanarkand,
                 guid = UUID.randomUUID().toString()
             ),
         )
