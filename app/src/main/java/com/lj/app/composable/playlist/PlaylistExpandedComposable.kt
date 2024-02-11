@@ -11,10 +11,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,18 +24,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.lj.app.R
-import com.lj.app.composable.image.CustomIcon
 import com.lj.app.composable.image.DisplayImage
 import com.lj.app.composable.music.MusicItemComposable
+import com.lj.app.composable.player.RowCurrentMusicPlayerComposable
 import com.lj.app.viewmodel.PlaylistViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaylistExpandedComposable(navController: NavController, viewModel: PlaylistViewModel) {
+
+    val backgroundColor = Color.Black
+    val textColor = Color.White
+
     Row {
         Surface(modifier = Modifier.fillMaxWidth(0.3F)) {
-            Column(modifier = Modifier.background(Color.Black)) {
+            Column(modifier = Modifier.background(backgroundColor)) {
                 // DisplayImage with aspect ratio 1:1
                 DisplayImage(albumId = viewModel.image, modifier = Modifier
                     .fillMaxHeight()
@@ -50,7 +51,7 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
                 Text(
                     text = viewModel.name,
                     style = MaterialTheme.typography.labelLarge.copy(
-                        color = Color.White,
+                        color = textColor,
                         fontSize = 40.sp,
                         fontWeight = FontWeight.Bold
                     ),
@@ -62,13 +63,16 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
             }
         }
 
-        Box(modifier = Modifier.fillMaxHeight().weight(1f).padding(8.dp)) {
+        Box(modifier = Modifier
+            .fillMaxHeight()
+            .weight(1f)
+            .padding(8.dp)) {
 
             LazyColumn {
                 itemsIndexed(viewModel.getMusics()) { index, item ->
 
                     Surface(
-                        modifier = Modifier.background(Color.Black),
+                        modifier = Modifier.background(backgroundColor),
                         onClick = { viewModel.play(item.name) }) {
                         MusicItemComposable(item, viewModel.currentMusicName.value == item.name)
                     }
@@ -83,73 +87,16 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .height(80.dp)
-                                .background(Color.Black)
+                                .background(backgroundColor)
                         )
                     }
                 }
             }
 
             if(viewModel.isPlaying.value) {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                ) {
-
-                    Row(modifier = Modifier.background(Color(55, 0, 179))) {
-                        // Icône en bas, superposée à la colonne
-                        IconButton(
-                            onClick =
-                            {
-                                if (viewModel.isPause.value) {
-                                    viewModel.pause()
-                                } else {
-                                    viewModel.pause()
-                                }
-                            },
-                            modifier = Modifier.padding(8.dp)
-                        ) {
-                            if (viewModel.isPause.value) {
-                                CustomIcon(icon = R.drawable.btn_jouer, size = 48)
-                            } else {
-                                CustomIcon(icon = R.drawable.btn_pause, size = 48)
-                            }
-                        }
-
-                        viewModel.currentMusic.value?.let {
-                            Box(
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                                    .weight(1f)
-                            ) {
-                                Column {
-                                    Text(
-                                        text = it.name,
-                                        style = MaterialTheme.typography.labelLarge.copy(
-                                            color = Color.White,
-                                            fontWeight = FontWeight.Bold,
-                                            fontSize = 20.sp,
-                                        )
-                                    )
-                                    Text(
-                                        text = it.artist,
-                                        style = MaterialTheme.typography.labelLarge.copy(
-                                            color = Color.White,
-                                            fontSize = 14.sp,
-                                        )
-                                    )
-                                }
-                            }
-                        }
-
-                        IconButton(
-                            onClick = { viewModel.next() },
-                            modifier = Modifier.padding(8.dp)
-                        ) {
-                            CustomIcon(icon = R.drawable.btn_suivant, size = 48)
-                        }
-                    }
-                }
+                RowCurrentMusicPlayerComposable(navController = navController, viewModel = viewModel, modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter))
             }
         }
     }

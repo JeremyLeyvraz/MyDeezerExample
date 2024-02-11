@@ -8,14 +8,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Pause
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.SkipNext
-import androidx.compose.material.icons.filled.SkipPrevious
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
@@ -24,18 +16,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.lj.app.R
 import com.lj.app.composable.image.DisplayImage
+import com.lj.app.composable.player.RowMainCommandComposable
 import com.lj.app.converter.formatLongToMinutesSeconds
 import com.lj.app.viewmodel.PlaylistViewModel
 
 @Composable
 fun MusicCompactComposable(viewModel: PlaylistViewModel) {
+
+    val backgroundColor = LocalContext.current.resources.getColor(R.color.purple_700, null)
+    val textColor = Color.White
+
     Column(modifier = Modifier
         .fillMaxSize()
-        .background(Color(55, 0, 179))) {
+        .background(Color(backgroundColor))) {
         viewModel.currentMusic.value?.let {
             Surface(modifier = Modifier
                 .fillMaxWidth()
@@ -50,7 +49,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
                 text = it.name,
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontSize = 32.sp,
-                    color = Color.White,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 ),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -59,7 +58,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
                 text = it.artist,
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontSize = 24.sp,
-                    color = Color.White,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 ),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -75,7 +74,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
                 text = formatLongToMinutesSeconds(viewModel.currentPosition.value),
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontSize = 12.sp,
-                    color = Color.White,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 )
             )
@@ -86,7 +85,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
                 text = formatLongToMinutesSeconds(viewModel.duration.value - viewModel.currentPosition.value),
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontSize = 12.sp,
-                    color = Color.White,
+                    color = textColor,
                     fontWeight = FontWeight.Bold
                 )
             )
@@ -102,57 +101,9 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+        // Command previous play/pause next
+        RowMainCommandComposable(viewModel, Modifier.align(Alignment.CenterHorizontally))
 
-            IconButton(
-                onClick = { viewModel.previous() },
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.CenterVertically)
-            ) {
-                Icon(Icons.Default.SkipPrevious,
-                    contentDescription = "Previous",
-                    tint = Color.White,
-                    modifier = Modifier.size(48.dp)
-                )
-            }
-
-            IconButton(
-                onClick =
-                {
-                    viewModel.pause()
-                },
-                modifier = Modifier
-                    .padding(8.dp)
-                    .size(100.dp)
-                    .align(Alignment.CenterVertically)
-            ) {
-                var icon = Icons.Default.Pause
-                var description = "Pause"
-                if (viewModel.isPause.value) {
-                    icon = Icons.Default.PlayArrow
-                    description = "Play"
-                }
-                Icon( icon ,
-                    contentDescription = description,
-                    tint = Color.White,
-                    modifier = Modifier.size(72.dp)
-                )
-            }
-            IconButton(
-                onClick = { viewModel.next() },
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.CenterVertically)
-            ) {
-                Icon(Icons.Default.SkipNext,
-                    contentDescription = "Next",
-                    tint = Color.White,
-                    modifier = Modifier.size(48.dp)
-                )
-            }
-        }
         Spacer(modifier = Modifier.weight(.5f))
-
     }
 }

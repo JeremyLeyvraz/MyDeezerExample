@@ -114,13 +114,7 @@ class PlayerService: Service() {
                 exoPlayer?.playWhenReady = true
             }
             ACTION_PAUSE -> {
-                if(exoPlayer!!.isPlaying) {
-                    //exoPlayer!!.pause()
-                    exoPlayer?.playWhenReady = false
-                } else {
-                    //exoPlayer!!.play()
-                    exoPlayer?.playWhenReady = true
-                }
+                exoPlayer?.playWhenReady = !exoPlayer!!.isPlaying
             }
             ACTION_STOP -> {
                 // Arrêtez la lecture actuelle
@@ -142,17 +136,8 @@ class PlayerService: Service() {
                 val time = intent.getFloatExtra("progress", 0f)
 
                 val newTime = time * exoPlayer!!.duration / 100.0
-
-
-
                 exoPlayer?.seekTo(newTime.toLong())
             }
-//            ACTION_CURRENT_MUSIC_REQUEST -> {
-//                val responseIntent = Intent()
-//                responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
-//                    responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
-//                sendBroadcast(responseIntent)
-//            }
             ACTION_APPLICATION_RESUME -> {
                 // Send current music ID
                 var responseIntent = Intent()

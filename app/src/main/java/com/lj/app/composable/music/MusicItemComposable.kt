@@ -26,7 +26,12 @@ import com.lj.app.model.Music
 
 @Composable
 fun MusicItemComposable(music: Music, isPlaying: Boolean) {
-    Row(modifier = Modifier.background(Color.Black)) {
+
+    val backgroundColor = Color.Black
+    val textColor = Color.White
+
+
+    Row(modifier = Modifier.background(backgroundColor)) {
         DisplayImage(albumId = music.cover, modifier = Modifier
             .width(80.dp)
             .height(80.dp))
@@ -38,14 +43,14 @@ fun MusicItemComposable(music: Music, isPlaying: Boolean) {
             Text(
                 text = music.name,
                 style = MaterialTheme.typography.labelLarge.copy(
-                    color = Color.White,
+                    color = textColor,
                     fontSize = 20.sp,
                 )
             )
             Text(
                 text = music.artist,
                 style = MaterialTheme.typography.labelLarge.copy(
-                    color = Color.White,
+                    color = textColor,
                     fontSize = 14.sp,
                 )
             )

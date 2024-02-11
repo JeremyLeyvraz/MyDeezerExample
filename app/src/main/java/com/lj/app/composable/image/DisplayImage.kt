@@ -10,7 +10,7 @@ import androidx.compose.ui.res.painterResource
 fun DisplayImage(@DrawableRes albumId: Int, modifier: Modifier = Modifier) {
     Image(
         painter = painterResource(id = albumId),
-        contentDescription = "not",
+        contentDescription = "image",
         modifier = modifier
     )
 }
