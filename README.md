@@ -1,35 +1,35 @@
 # My Deezer example
 
-## Résumé
-Application similaire à Deezer.
+## Summary
+Application similar to Deezer.
 
-Elle lit des pistes audio enregistrées en local.
-Il possible de jouer une piste, de la mettre en pause, de passer à la suivante ou à la précédente.
+It plays locally stored audio tracks.
+It is possible to play a track, pause it, skip to the next or previous one.
 
-L'application gère le format portrait/paysage.
-L'application a été testée sur téléphone et sur tablette.
+The application handles portrait/landscape format.
+The application has been tested on both phones and tablets.
 
-La piste est jouée par un foreground service, avec une notification associée.
+The track is played by a foreground service, with an associated notification.
 
-Warning: Pour le moment, pour stopper le service, il faut force stop l'application.
+Warning: Currently, to stop the service, it is necessary to force stop the application.
 
-## Matériels utilisés pour les tests
+## Hardware used for testing
 
-Téléphone: Samsung Galaxy Z Flip 5 - Android 14
-Tablette: Samsung Galaxy Tab S6 Lite - Android 12
+Phone: Samsung Galaxy Z Flip 5 - Android 14
+Tablet: Samsung Galaxy Tab S6 Lite - Android 12
 
 # TODO
 
 ## Features
-- Foreground notification custom => design mini lecteur
-- Ajout d'un écran pour choisir des playlists différentes 
-- Lecteur: ajout de la fonction "repeat one"
-- Lecteur: ajout de la fonction "repeat all"
-- Permettre l'arrêt total de l'application sans passer par "force stop"
+- Custom foreground notification => design mini player
+- Adding a screen to choose different playlists
+- Player: adding the "repeat one" function
+- Player: adding the "repeat all" function
+- Allow total application shutdown without using "force stop"
 
 ## Refactoring
-- Utiliser type et color du package theme
-- Utilisez des images de meilleure qualité
+- Use type and color from the theme package
+- Use higher quality images
 
 ## Bugs
-- Foreground notification: (fermer app + clic notif) plusieurs fois => clic sur back plusieurs fois possible => vérifier la pile des activités
+- Foreground notification: (close app + click notification) multiple times => multiple possible clicks on back button => check the activity stack
