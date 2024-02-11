@@ -10,7 +10,7 @@ android {
     compileSdk project.compileSdk
 
     defaultConfig {
-        applicationId "com.lj.cleanarchitecturetemplate"
+        applicationId "com.lj.mydeezerexample"
         minSdk project.minSdk
         targetSdk project.targetSdk
         versionCode 1
@@ -50,9 +50,6 @@ android {
 }
 
 dependencies {
-    implementation project(':data')
-    implementation project(':domain')
-    implementation project(':usecase')
 
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
@@ -62,10 +59,16 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
     implementation "androidx.compose.material:material:$compose_material"
+    implementation "androidx.compose.material:material-icons-extended:$compose_material"
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$compose_version"
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
     implementation "androidx.compose.foundation:foundation:$compose_version"
+
     implementation "io.coil-kt:coil-compose:$coil_compose"
+    implementation "io.coil-kt:coil-gif:$coil_compose"
+
+    implementation "androidx.compose.material3:material3:1.0.1"
+    implementation "androidx.compose.material3:material3-window-size-class:1.0.1"
 
     // Hilt dependencies
     implementation "androidx.hilt:hilt-navigation-compose:$nav_compose_version"
@@ -83,6 +86,13 @@ dependencies {
     // Android test
     androidTestImplementation "androidx.test.ext:junit:$android_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:$compose_version"
+    implementation "androidx.activity:activity-compose:$compose_version"
+    implementation "com.google.android.exoplayer:exoplayer-core:2.19.1"
+    implementation "com.google.android.exoplayer:exoplayer-ui:2.19.1"
+
 }
 
 apply plugin: "io.gitlab.arturbosch.detekt"
