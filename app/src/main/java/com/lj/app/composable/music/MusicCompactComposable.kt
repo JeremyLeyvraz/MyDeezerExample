@@ -105,7 +105,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
 
             IconButton(
-                onClick = { viewModel.next() },
+                onClick = { viewModel.previous() },
                 modifier = Modifier
                     .padding(8.dp)
                     .align(Alignment.CenterVertically)

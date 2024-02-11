@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lj.app.composable.music.MusicComposable
 import com.lj.app.composable.playlist.PlaylistComposable
 import com.lj.app.viewmodel.PlaylistViewModel
 
@@ -30,7 +31,7 @@ fun MainNavigation(windowSizeClass: WindowSizeClass) {
         {
             val viewModel = hiltViewModel<PlaylistViewModel>()
             viewModel.init(LocalContext.current)
-            PlaylistComposable(windowSizeClass, navController, viewModel)
+            MusicComposable(windowSizeClass, viewModel)
         }
     }
 }

@@ -134,7 +134,7 @@ class PlayerService: Service() {
             }
             ACTION_PREVIOUS -> {
                 // Chargez et commencez la lecture de la piste suivante
-                exoPlayer?.seekToNextMediaItem()
+                exoPlayer?.seekToPreviousMediaItem()
                 exoPlayer?.play()
             }
             ACTION_GOTO -> {
@@ -174,6 +174,7 @@ class PlayerService: Service() {
 
                     responseIntent = Intent()
                     responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
+                    responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
                     sendBroadcast(responseIntent)
                 }
             }

@@ -50,7 +50,9 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
                 updateProgress()
             }
             if (intent?.action == PlayerService.ACTION_APPLICATION_RESUME_RESULT) {
+                val isPlayingExtra = intent.getBooleanExtra("isPlaying", false)
                 isPlaying.value = currentMusic.value != null
+                isPause.value = !isPlayingExtra
             }
         }
     }
@@ -120,6 +122,14 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
     fun next() {
         val nextIntent = Intent(context, PlayerService::class.java)
         nextIntent.action = PlayerService.ACTION_NEXT
+        context?.startService(nextIntent)
+        isPlaying.value = true
+        isPause.value = false
+    }
+
+    fun previous() {
+        val nextIntent = Intent(context, PlayerService::class.java)
+        nextIntent.action = PlayerService.ACTION_PREVIOUS
         context?.startService(nextIntent)
         isPlaying.value = true
         isPause.value = false

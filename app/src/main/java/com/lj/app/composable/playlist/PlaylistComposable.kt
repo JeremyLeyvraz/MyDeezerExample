@@ -14,7 +14,7 @@ fun PlaylistComposable(windowSizeClass: WindowSizeClass, navController: NavContr
             PlaylistCompactComposable(navController, viewModel)
         }
         WindowWidthSizeClass.Medium -> {
-            PlaylistMediumComposable(navController, viewModel)
+            //PlaylistMediumComposable(navController, viewModel)
         }
         WindowWidthSizeClass.Expanded -> {
             PlaylistExpandedComposable(navController, viewModel)
