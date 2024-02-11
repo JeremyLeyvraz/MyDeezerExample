@@ -9,12 +9,15 @@ import com.lj.app.viewmodel.PlaylistViewModel
 fun MusicComposable (windowSizeClass: WindowSizeClass, viewModel: PlaylistViewModel) {
 
     when (windowSizeClass.widthSizeClass) {
+        // Vue portrait téléphone
         WindowWidthSizeClass.Compact -> {
             MusicCompactComposable(viewModel)
         }
+        // Vue portrait tablette
         WindowWidthSizeClass.Medium -> {
             MusicMediumComposable(viewModel)
         }
+        // Vue paysage téléphone et tablette
         WindowWidthSizeClass.Expanded -> {
             MusicExpandedComposable(viewModel)
         }

@@ -10,12 +10,15 @@ import com.lj.app.viewmodel.PlaylistViewModel
 fun PlaylistComposable(windowSizeClass: WindowSizeClass, navController: NavController, viewModel: PlaylistViewModel) {
 
     when (windowSizeClass.widthSizeClass) {
+        // Vue portrait téléphone
         WindowWidthSizeClass.Compact -> {
             PlaylistCompactComposable(navController, viewModel)
         }
+        // Vue portrait tablette
         WindowWidthSizeClass.Medium -> {
-            //PlaylistMediumComposable(navController, viewModel)
+            PlaylistMediumComposable(navController, viewModel)
         }
+        // Vue paysage téléphone et tablette
         WindowWidthSizeClass.Expanded -> {
             PlaylistExpandedComposable(navController, viewModel)
         }
