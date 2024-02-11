@@ -1,7 +1,7 @@
 # TODO
 
 ## Features
-- Couleur de fond à mettre en constante
+- Utiliser type et color du package theme
 - Clean + commentaire
 - Mettre à jour le README => Ecrire le matériel utilisé pour test
 - Faire la vue Medium pour la table

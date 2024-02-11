@@ -20,7 +20,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.lj.app.navigation.MainNavigation
 import com.lj.app.service.PlayerService
-import com.lj.app.ui.theme.TemplateTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -69,10 +68,8 @@ class MainActivity : ComponentActivity() {
         startService(serviceIntent)
 
         setContent {
-            TemplateTheme(darkTheme = true) {
-                val windowSizeClass = calculateWindowSizeClass(this)
-                MyApp(windowSizeClass = windowSizeClass)
-            }
+            val windowSizeClass = calculateWindowSizeClass(this)
+            MyApp(windowSizeClass = windowSizeClass)
         }
     }
 }
