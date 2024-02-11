@@ -13,6 +13,9 @@ import com.lj.app.service.PlayerService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+/**
+ * ViewModel responsible for managing the playlist and playback state.
+ */
 @HiltViewModel
 class PlaylistViewModel @Inject constructor(): ViewModel() {
 
@@ -33,6 +36,9 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
     val name = playlist.name
     val image = playlist.image
 
+    /**
+     * BroadcastReceiver to receive updates from the PlayerService.
+     */
     val dataResponseReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (intent?.action == PlayerService.ACTION_CURRENT_MUSIC_RESULT) {
@@ -57,6 +63,9 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         }
     }
 
+    /**
+     * Updates the playback progress based on the current position and duration.
+     */
     private fun updateProgress() {
         duration.value.let { it ->
 
@@ -73,17 +82,16 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         }
     }
 
-    fun goTo(value: Float) {
-        val playIntent = Intent(context, PlayerService::class.java)
-        playIntent.action = PlayerService.ACTION_GOTO
-        playIntent.putExtra("progress", value)
-        context?.startService(playIntent)
-    }
-
+    /**
+     * Retrieves the list of music in the playlist.
+     */
     fun getMusics(): List<Music> {
         return playlist.getPlayList()
     }
 
+    /**
+     * Initializes the ViewModel with the given context.
+     */
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun init(context: Context) {
         this.context = context
@@ -97,6 +105,9 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         context.startService(playIntent)
     }
 
+    /**
+     * Plays the music with the given ID.
+     */
     fun play(musicId: String) {
         val playIntent = Intent(context, PlayerService::class.java)
         playIntent.action = PlayerService.ACTION_PLAY
@@ -106,6 +117,9 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         isPause.value = false
     }
 
+    /**
+     * Pauses the current playback.
+     */
     fun pause() {
         val pauseIntent = Intent(context, PlayerService::class.java)
         pauseIntent.action = PlayerService.ACTION_PAUSE
@@ -113,6 +127,9 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         isPause.value = !isPause.value
     }
 
+    /**
+     * Skips to the next track in the playlist.
+     */
     fun next() {
         val nextIntent = Intent(context, PlayerService::class.java)
         nextIntent.action = PlayerService.ACTION_NEXT
@@ -121,11 +138,24 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         isPause.value = false
     }
 
+    /**
+     * Skips to the previous track in the playlist.
+     */
     fun previous() {
         val nextIntent = Intent(context, PlayerService::class.java)
         nextIntent.action = PlayerService.ACTION_PREVIOUS
         context?.startService(nextIntent)
         isPlaying.value = true
         isPause.value = false
+    }
+
+    /**
+     * Seeks to a specific progress value in the current playback.
+     */
+    fun goTo(value: Float) {
+        val playIntent = Intent(context, PlayerService::class.java)
+        playIntent.action = PlayerService.ACTION_GOTO
+        playIntent.putExtra("progress", value)
+        context?.startService(playIntent)
     }
 }

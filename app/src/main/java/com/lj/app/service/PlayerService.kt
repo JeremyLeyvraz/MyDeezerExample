@@ -24,6 +24,10 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * Service responsible for managing audio playback using ExoPlayer library in the background.
+ * It handles play, pause, skip, and seek actions.
+ */
 class PlayerService: Service() {
     private var exoPlayer: SimpleExoPlayer? = null
     private var mediaSession: MediaSessionCompat? = null
@@ -33,7 +37,7 @@ class PlayerService: Service() {
         // Initialisez ExoPlayer
         exoPlayer = SimpleExoPlayer.Builder(this).build()
 
-        // Initialisez la session multimédia pour la gestion des boutons de notification
+        // Initialize the media session for managing notification buttons
         mediaSession = MediaSessionCompat(this, "AudioService")
         mediaSession?.setCallback(MediaSessionCallback())
         mediaSession?.isActive = true
@@ -79,7 +83,7 @@ class PlayerService: Service() {
                     sendBroadcast(responseIntent)
 
                     currentPositionJob?.cancel()
-                    // Lancer une coroutine pour mettre à jour la durée courante à intervalles réguliers
+                    // Start a coroutine to update the current duration at regular intervals
                     currentPositionJob = CoroutineScope(Dispatchers.Main).launch {
 
                         while (exoPlayer?.currentPosition!! < exoPlayer?.duration!!) {
@@ -103,11 +107,14 @@ class PlayerService: Service() {
         return START_REDELIVER_INTENT
     }
 
+    /**
+     * Handles different intents received by the service.
+     * It performs actions such as play, pause, skip, seek, and application resume.
+     */
     private fun handleIntent(intent: Intent?) {
         when (intent?.action) {
             ACTION_PLAY -> {
                 val musicId = intent.getStringExtra("musicId")
-                // Mettez en pause la lecture actuelle
                 val index = getIndex(musicId!!)
                 exoPlayer?.seekTo(index, C.TIME_UNSET)
                 exoPlayer?.play()
@@ -116,30 +123,24 @@ class PlayerService: Service() {
             ACTION_PAUSE -> {
                 exoPlayer?.playWhenReady = !exoPlayer!!.isPlaying
             }
-            ACTION_STOP -> {
-                // Arrêtez la lecture actuelle
-                exoPlayer?.stop()
-                stopSelf()
-            }
+            // Load and start playing the next track
             ACTION_NEXT -> {
-                // Chargez et commencez la lecture de la piste suivante
                 exoPlayer?.seekToNextMediaItem()
                 exoPlayer?.play()
             }
+            // Load and start playing the previous track
             ACTION_PREVIOUS -> {
-                // Chargez et commencez la lecture de la piste suivante
                 exoPlayer?.seekToPreviousMediaItem()
                 exoPlayer?.play()
             }
+            // Load and start playing the track at a specific progress
             ACTION_GOTO -> {
-                // Chargez et commencez la lecture de la piste suivante
                 val time = intent.getFloatExtra("progress", 0f)
-
                 val newTime = time * exoPlayer!!.duration / 100.0
                 exoPlayer?.seekTo(newTime.toLong())
             }
+            // Send current music ID and playback status
             ACTION_APPLICATION_RESUME -> {
-                // Send current music ID
                 var responseIntent = Intent()
                 if (exoPlayer!!.isPlaying || exoPlayer!!.currentPosition.toInt() != 0) {
 
@@ -166,6 +167,9 @@ class PlayerService: Service() {
         }
     }
 
+    /**
+     * Retrieves the index of a media item based on its ID.
+     */
     private fun getIndex(musidId: String): Int {
         val count = exoPlayer?.mediaItemCount;
 
@@ -179,20 +183,20 @@ class PlayerService: Service() {
         return -1
     }
 
+    /**
+     * Creates and returns a notification for the service.
+     */
     private fun createNotification(): Notification {
         val notificationChannelId = "foreground_service_channel"
 
-        // Create a notification channel if the Android version is Oreo or higher
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the NotificationChannel
-            val channel = NotificationChannel(
-                notificationChannelId,
-                "Foreground Service Channel",
-                NotificationManager.IMPORTANCE_LOW
-            )
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
+        // Create the NotificationChannel
+        val channel = NotificationChannel(
+            notificationChannelId,
+            "Foreground Service Channel",
+            NotificationManager.IMPORTANCE_LOW
+        )
+        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
 
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
@@ -203,8 +207,8 @@ class PlayerService: Service() {
         )
 
         return NotificationCompat.Builder(this, notificationChannelId)
-            .setContentTitle("Foreground Service Example")
-            .setContentText("Running...")
+            .setContentTitle("My Deezer example")
+            .setContentText("Playback service is running...")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
             .build()
@@ -214,46 +218,51 @@ class PlayerService: Service() {
         return null
     }
 
+    /**
+     * Cleans up resources and releases the ExoPlayer and MediaSession.
+     */
     override fun onDestroy() {
         super.onDestroy()
         exoPlayer?.release()
         mediaSession?.release()
     }
 
+    /**
+     * Callback for MediaSession events.
+     */
     private inner class MediaSessionCallback : MediaSessionCompat.Callback() {
         override fun onPlay() {
-            // Mettez en pause la lecture actuelle
+            // Resume the current playback
             exoPlayer?.playWhenReady = true
         }
 
         override fun onPause() {
-            // Mettez en pause la lecture actuelle
+            // Pause the current playback
             exoPlayer?.playWhenReady = false
         }
 
-        override fun onStop() {
-            // Arrêtez la lecture actuelle
-            exoPlayer?.stop()
-            stopSelf()
-        }
-
         override fun onSkipToNext() {
-            // Chargez et commencez la lecture de la piste suivante
+            // Load and start playing the next track
             exoPlayer?.seekToNextMediaItem()
         }
     }
 
+    /**
+     * Constants for action intents handled by the service.
+     */
     companion object {
-        const val ACTION_GOTO = "ACTION_GOTO"
+
         const val ACTION_PLAY = "ACTION_PLAY"
         const val ACTION_PAUSE = "ACTION_PAUSE"
-        const val ACTION_STOP = "ACTION_STOP"
         const val ACTION_NEXT = "ACTION_NEXT"
         const val ACTION_PREVIOUS = "ACTION_PREVIOUS"
-        const val ACTION_CURRENT_MUSIC_RESULT = "ACTION_CURRENT_MUSIC_RESULT"
+
+        const val ACTION_GOTO = "ACTION_GOTO"
+
         const val ACTION_DURATION = "ACTION_DURATION"
         const val ACTION_CURRENT_POSITION = "ACTION_CURRENT_POSITION"
 
+        const val ACTION_CURRENT_MUSIC_RESULT = "ACTION_CURRENT_MUSIC_RESULT"
 
         const val ACTION_APPLICATION_RESUME = "ACTION_APPLICATION_RESUME"
         const val ACTION_APPLICATION_RESUME_RESULT = "ACTION_APPLICATION_RESUME_RESULT"

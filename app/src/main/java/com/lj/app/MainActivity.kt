@@ -33,6 +33,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Create a notification for the foreground service
         val notificationId = 1
         val notificationChannelId = "foreground_service_channel"
         val notificationIntent = Intent(this, PlayerService::class.java)
@@ -44,8 +45,8 @@ class MainActivity : ComponentActivity() {
         )
 
         val notification = NotificationCompat.Builder(this, notificationChannelId)
-            .setContentTitle("Foreground Service Example")
-            .setContentText("message")
+            .setContentTitle("My Deezer example")
+            .setContentText("Playback service is running...")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
             .build()
@@ -64,9 +65,11 @@ class MainActivity : ComponentActivity() {
         }
         notificationManager.notify(notificationId, notification)
 
+        // Start the player service
         val serviceIntent = Intent(this, PlayerService::class.java)
         startService(serviceIntent)
 
+        // Set content
         setContent {
             val windowSizeClass = calculateWindowSizeClass(this)
             MyApp(windowSizeClass = windowSizeClass)

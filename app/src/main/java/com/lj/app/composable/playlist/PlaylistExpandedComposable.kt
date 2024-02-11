@@ -29,25 +29,32 @@ import com.lj.app.composable.music.MusicItemComposable
 import com.lj.app.composable.player.RowCurrentMusicPlayerComposable
 import com.lj.app.viewmodel.PlaylistViewModel
 
+/**
+ * A composable function responsible for displaying the playlist in an expanded layout.
+ * @param navController The navigation controller.
+ * @param viewModel The view model containing data for the playlist.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaylistExpandedComposable(navController: NavController, viewModel: PlaylistViewModel) {
 
+    // Colors for UI elements
     val backgroundColor = Color.Black
     val textColor = Color.White
 
     Row {
+        // Left side containing playlist image and name
         Surface(modifier = Modifier.fillMaxWidth(0.3F)) {
             Column(modifier = Modifier.background(backgroundColor)) {
-                // DisplayImage with aspect ratio 1:1
-                DisplayImage(albumId = viewModel.image, modifier = Modifier
+                // Display playlist image with aspect ratio 1:1
+                DisplayImage(resourceId = viewModel.image, modifier = Modifier
                     .fillMaxHeight()
                     .padding(8.dp)
                     .weight(1f)
                     .aspectRatio(1f)
                 )
 
-                // Text component
+                // Playlist name
                 Text(
                     text = viewModel.name,
                     style = MaterialTheme.typography.labelLarge.copy(
@@ -58,7 +65,7 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
                     modifier = Modifier
                         .fillMaxHeight()
                         .align(Alignment.CenterHorizontally)
-                        .weight(0.2f) // Adjust the weight as needed for proper distribution
+                        .weight(0.2f)
                 )
             }
         }
@@ -71,18 +78,21 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
             LazyColumn {
                 itemsIndexed(viewModel.getMusics()) { index, item ->
 
+                    // Display music item
                     Surface(
                         modifier = Modifier.background(backgroundColor),
                         onClick = { viewModel.play(item.name) }) {
                         MusicItemComposable(item, viewModel.currentMusicName.value == item.name)
                     }
-                    // Add a separator if the item is not the last one
+
+                    // Divider between music items
                     if (index < viewModel.getMusics().size - 1) {
                         Divider(modifier = Modifier.padding(top = 4.dp, bottom = 4.dp))
                     }
                 }
                 if(viewModel.isPlaying.value) {
                     item {
+                        // Empty space to display the mini player without hiding the last item in the list
                         Box(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -94,9 +104,11 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
             }
 
             if(viewModel.isPlaying.value) {
+                // Display current music player if music is playing
                 RowCurrentMusicPlayerComposable(navController = navController, viewModel = viewModel, modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.BottomCenter))
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 8.dp))
             }
         }
     }

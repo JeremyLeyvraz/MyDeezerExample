@@ -29,10 +29,17 @@ import com.lj.app.R
 import com.lj.app.navigation.MUSIC_DESTINATION
 import com.lj.app.viewmodel.PlaylistViewModel
 
+/**
+ * A composable function responsible for displaying the current music player in a row layout.
+ * @param navController The navigation controller for navigating to the music destination.
+ * @param viewModel The view model containing data for the playlist.
+ * @param modifier Optional modifier for the current music player.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: PlaylistViewModel, modifier: Modifier = Modifier) {
 
+    // Colors for player UI elements
     val playerColor = LocalContext.current.resources.getColor(R.color.purple_700, null)
     val textColor = Color.White
     val iconColor = Color.White
@@ -45,7 +52,8 @@ fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: Pla
     ) {
 
         Row(modifier = Modifier.background(Color(playerColor))) {
-            // Icône en bas, superposée à la colonne
+
+            // Play/Pause button
             IconButton(
                 onClick =
                 {
@@ -67,6 +75,7 @@ fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: Pla
                 )
             }
 
+            // Display current music information
             viewModel.currentMusic.value?.let {
                 Box(
                     modifier = Modifier
@@ -93,6 +102,7 @@ fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: Pla
                 }
             }
 
+            // Next button
             IconButton(
                 onClick = { viewModel.next() },
                 modifier = Modifier.padding(8.dp)

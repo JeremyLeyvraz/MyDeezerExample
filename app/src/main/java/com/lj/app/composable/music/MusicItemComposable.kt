@@ -24,22 +24,32 @@ import com.lj.app.R
 import com.lj.app.composable.image.DisplayImage
 import com.lj.app.model.Music
 
+/**
+ * A composable function responsible for displaying a single music item.
+ * @param music The music item to display.
+ * @param isPlaying Indicates whether the music is currently playing.
+ */
 @Composable
 fun MusicItemComposable(music: Music, isPlaying: Boolean) {
 
+    // Colors for UI elements
     val backgroundColor = Color.Black
     val textColor = Color.White
 
-
     Row(modifier = Modifier.background(backgroundColor)) {
-        DisplayImage(albumId = music.cover, modifier = Modifier
+
+        // Display music cover image
+        DisplayImage(resourceId = music.cover, modifier = Modifier
             .width(80.dp)
             .height(80.dp))
+
         Column(modifier = Modifier
             .fillMaxWidth()
             .padding(start = 8.dp, end = 8.dp)
             .align(Alignment.CenterVertically)
             .weight(1.0f)) {
+
+            // Music title
             Text(
                 text = music.name,
                 style = MaterialTheme.typography.labelLarge.copy(
@@ -47,6 +57,7 @@ fun MusicItemComposable(music: Music, isPlaying: Boolean) {
                     fontSize = 20.sp,
                 )
             )
+            // Artist name
             Text(
                 text = music.artist,
                 style = MaterialTheme.typography.labelLarge.copy(
@@ -55,6 +66,8 @@ fun MusicItemComposable(music: Music, isPlaying: Boolean) {
                 )
             )
         }
+
+        // Display playing indicator if the music is currently playing
         if(isPlaying) {
             Column(
                 modifier = Modifier

@@ -26,20 +26,26 @@ import com.lj.app.composable.player.RowMainCommandComposable
 import com.lj.app.converter.formatLongToMinutesSeconds
 import com.lj.app.viewmodel.PlaylistViewModel
 
+/**
+ * A composable function responsible for displaying the music in an expanded layout.
+ * @param viewModel The view model containing data for the playlist.
+ */
 @Composable
 fun MusicExpandedComposable(viewModel: PlaylistViewModel) {
 
+    // Colors for UI elements
     val backgroundColor = LocalContext.current.resources.getColor(R.color.purple_700, null)
     val textColor = Color.White
 
     Row(modifier = Modifier.background(Color(backgroundColor))) {
         viewModel.currentMusic.value?.let {
 
+            // Display image with aspect ratio 1:1
             Surface(modifier = Modifier.fillMaxHeight().padding(8.dp)) {
                 Column {
                     // DisplayImage with aspect ratio 1:1
                     DisplayImage(
-                        albumId = it.cover, modifier = Modifier
+                        resourceId = it.cover, modifier = Modifier
                             .fillMaxHeight()
                             .aspectRatio(1f)
                     )
@@ -55,6 +61,7 @@ fun MusicExpandedComposable(viewModel: PlaylistViewModel) {
 
                     Spacer(modifier = Modifier.weight(1f))
 
+                    // Music title and artist name
                     Text(
                         text = it.name,
                         style = MaterialTheme.typography.labelLarge.copy(
@@ -77,6 +84,7 @@ fun MusicExpandedComposable(viewModel: PlaylistViewModel) {
                             .align(Alignment.CenterHorizontally)
                     )
 
+                    // Current position and remaining time
                     Row {
 
                         Text(
@@ -100,6 +108,7 @@ fun MusicExpandedComposable(viewModel: PlaylistViewModel) {
                         )
                     }
 
+                    // Seekbar
                     Slider(
                         value = viewModel.progress.value,
                         onValueChange = {
@@ -110,15 +119,13 @@ fun MusicExpandedComposable(viewModel: PlaylistViewModel) {
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
 
-                    // Command previous play/pause next
+                    // Playback controls (previous, play/pause, next)
                     RowMainCommandComposable(viewModel, Modifier.align(Alignment.CenterHorizontally))
 
                     Spacer(modifier = Modifier.weight(1f))
 
                 }
-
             }
-
         }
     }
 }

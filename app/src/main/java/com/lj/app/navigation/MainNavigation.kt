@@ -21,12 +21,14 @@ const val MUSIC_DESTINATION = "music"
 fun MainNavigation(windowSizeClass: WindowSizeClass) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = PLAYLIST_DESTINATION) {
+        // Define a composable for the playlist destination
         composable(PLAYLIST_DESTINATION)
         {
             val viewModel = hiltViewModel<PlaylistViewModel>()
             viewModel.init(LocalContext.current)
             PlaylistComposable(windowSizeClass, navController, viewModel)
         }
+        // Define a composable for the music destination
         composable(MUSIC_DESTINATION)
         {
             val viewModel = hiltViewModel<PlaylistViewModel>()

@@ -17,13 +17,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.lj.app.viewmodel.PlaylistViewModel
 
+/**
+ * A composable function responsible for displaying the main playback control buttons in a row layout.
+ * @param viewModel The view model containing data for the playlist.
+ * @param modifier Optional modifier for the row layout.
+ */
 @Composable
 fun RowMainCommandComposable(viewModel: PlaylistViewModel, modifier: Modifier = Modifier) {
 
+    // Color for icon tint
     val iconColor = Color.White
 
     Row(modifier = modifier) {
 
+        // Previous button
         IconButton(
             onClick = { viewModel.previous() },
             modifier = Modifier
@@ -38,6 +45,7 @@ fun RowMainCommandComposable(viewModel: PlaylistViewModel, modifier: Modifier = 
             )
         }
 
+        // Play/Pause button
         IconButton(
             onClick =
             {
@@ -61,6 +69,8 @@ fun RowMainCommandComposable(viewModel: PlaylistViewModel, modifier: Modifier = 
                 modifier = Modifier.size(72.dp)
             )
         }
+
+        // Next button
         IconButton(
             onClick = { viewModel.next() },
             modifier = Modifier

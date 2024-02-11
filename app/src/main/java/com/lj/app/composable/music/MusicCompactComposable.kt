@@ -26,9 +26,14 @@ import com.lj.app.composable.player.RowMainCommandComposable
 import com.lj.app.converter.formatLongToMinutesSeconds
 import com.lj.app.viewmodel.PlaylistViewModel
 
+/**
+ * A composable function responsible for displaying the music in a compact layout.
+ * @param viewModel The view model containing data for the playlist.
+ */
 @Composable
 fun MusicCompactComposable(viewModel: PlaylistViewModel) {
 
+    // Colors for UI elements
     val backgroundColor = LocalContext.current.resources.getColor(R.color.purple_700, null)
     val textColor = Color.White
 
@@ -36,15 +41,20 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
         .fillMaxSize()
         .background(Color(backgroundColor))) {
         viewModel.currentMusic.value?.let {
+
+            // Display image
             Surface(modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp)) {
-                DisplayImage(albumId = it.cover,
+                DisplayImage(resourceId = it.cover,
                     Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f))
             }
+
             Spacer(modifier = Modifier.weight(.5f))
+
+            // Music title
             Text(
                 text = it.name,
                 style = MaterialTheme.typography.labelLarge.copy(
@@ -54,6 +64,8 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
                 ),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
+
+            // Artist name
             Text(
                 text = it.artist,
                 style = MaterialTheme.typography.labelLarge.copy(
@@ -63,9 +75,12 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
                 ),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
+
             Spacer(modifier = Modifier.weight(1f))
+
         }
 
+        // Current position and remaining time
         Row(modifier = Modifier
             .align(Alignment.CenterHorizontally)
             .padding(start = 16.dp, end = 16.dp)) {
@@ -91,6 +106,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
             )
         }
 
+        // Seekbar
         Slider(
             value = viewModel.progress.value,
             onValueChange = {
@@ -101,7 +117,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        // Command previous play/pause next
+        // Playback controls (previous, play/pause, next)
         RowMainCommandComposable(viewModel, Modifier.align(Alignment.CenterHorizontally))
 
         Spacer(modifier = Modifier.weight(.5f))
