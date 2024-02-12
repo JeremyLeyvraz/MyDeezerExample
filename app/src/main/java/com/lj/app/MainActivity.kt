@@ -1,11 +1,13 @@
 package com.lj.app
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.compose.material3.*
 import android.os.Bundle
+import android.widget.RemoteViews
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @SuppressLint("RemoteViewLayout")
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +47,16 @@ class MainActivity : ComponentActivity() {
             PendingIntent.FLAG_IMMUTABLE
         )
 
+
+        // Create the notification layout using RemoteViews
+        val remoteViews = RemoteViews(this.packageName, R.layout.player)
+
         val notification = NotificationCompat.Builder(this, notificationChannelId)
             .setContentTitle("My Deezer example")
             .setContentText("Playback service is running...")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
+            .setCustomContentView(remoteViews)
             .build()
 
         val notificationManager = NotificationManagerCompat.from(this)

@@ -1,5 +1,6 @@
 package com.lj.app.service
 
+import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,6 +10,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.IBinder
 import android.support.v4.media.session.MediaSessionCompat
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.MediaItem
@@ -185,6 +187,7 @@ class PlayerService: Service() {
     /**
      * Creates and returns a notification for the service.
      */
+    @SuppressLint("RemoteViewLayout")
     private fun createNotification(): Notification {
         val notificationChannelId = "foreground_service_channel"
 
@@ -196,6 +199,12 @@ class PlayerService: Service() {
         )
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+
+
+        // Create the notification layout using RemoteViews
+        val remoteViews = RemoteViews(this.packageName, R.layout.player)
+
+
 
         val notificationIntent = Intent(this, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
@@ -210,6 +219,7 @@ class PlayerService: Service() {
             .setContentText("Playback service is running...")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentIntent(pendingIntent)
+            .setCustomContentView(remoteViews)
             .build()
     }
 
