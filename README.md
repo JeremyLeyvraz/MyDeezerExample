@@ -16,6 +16,7 @@ Warning: Currently, to stop the service, it is necessary to force stop the appli
 ## Hardware used for testing
 
 Phone: Samsung Galaxy Z Flip 5 - Android 14
+
 Tablet: Samsung Galaxy Tab S6 Lite - Android 12
 
 # TODO
