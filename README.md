@@ -22,13 +22,14 @@ Tablet: Samsung Galaxy Tab S6 Lite - Android 12
 # TODO
 
 ## Features
-- Custom foreground notification => design mini player
+- Add a widget => mini-player
 - Adding a screen to choose different playlists
 - Player: adding the "repeat one" function
 - Player: adding the "repeat all" function
 - Allow total application shutdown without using "force stop"
 
 ## Refactoring
+- Remove foreground notification or find a way to non-dismiss it in Android 14
 - Use type and color from the theme package
 - Use higher quality images
 
