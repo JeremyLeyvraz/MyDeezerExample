@@ -1,7 +1,7 @@
 buildscript {
     ext {
         minSdk = 29
-        compileSdk = 33
+        compileSdk = 34
         targetSdk = 33
 
         androix_appcompat = "1.6.1"

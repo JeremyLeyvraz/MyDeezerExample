@@ -64,6 +64,13 @@ dependencies {
     // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
     implementation "androidx.compose.foundation:foundation:$compose_version"
 
+
+    implementation "androidx.glance:glance-appwidget:1.0.0"
+    implementation "androidx.glance:glance-material:1.0.0"
+    implementation "androidx.glance:glance-material3:1.0.0"
+
+
+
     implementation "io.coil-kt:coil-compose:$coil_compose"
     implementation "io.coil-kt:coil-gif:$coil_compose"
 
