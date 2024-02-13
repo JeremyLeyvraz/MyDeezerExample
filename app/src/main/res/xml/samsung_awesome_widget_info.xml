@@ -1,0 +1,4 @@
+<!-- res/xml/samsung_awesome_widget_info.xml -->
+<samsung-appwidget-provider
+    display="sub_screen"
+    privacyWidget="true" />
