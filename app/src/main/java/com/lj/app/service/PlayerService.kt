@@ -118,19 +118,39 @@ class PlayerService: Service() {
                 exoPlayer?.seekTo(index, C.TIME_UNSET)
                 exoPlayer?.play()
                 exoPlayer?.playWhenReady = true
+
+                val responseIntent = Intent()
+                responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
+                responseIntent.putExtra("isPlaying", true)
+                sendBroadcast(responseIntent)
             }
             ACTION_PAUSE -> {
                 exoPlayer?.playWhenReady = !exoPlayer!!.isPlaying
+
+                val responseIntent = Intent()
+                responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
+                responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
+                sendBroadcast(responseIntent)
             }
             // Load and start playing the next track
             ACTION_NEXT -> {
                 exoPlayer?.seekToNextMediaItem()
                 exoPlayer?.play()
+
+                val responseIntent = Intent()
+                responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
+                responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
+                sendBroadcast(responseIntent)
             }
             // Load and start playing the previous track
             ACTION_PREVIOUS -> {
                 exoPlayer?.seekToPreviousMediaItem()
                 exoPlayer?.play()
+
+                val responseIntent = Intent()
+                responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
+                responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
+                sendBroadcast(responseIntent)
             }
             // Load and start playing the track at a specific progress
             ACTION_GOTO -> {
@@ -252,7 +272,11 @@ class PlayerService: Service() {
     companion object {
 
         const val ACTION_PLAY = "ACTION_PLAY"
+
         const val ACTION_PAUSE = "ACTION_PAUSE"
+        const val ACTION_PAUSE_RESULT = "ACTION_PAUSE_RESULT"
+
+
         const val ACTION_NEXT = "ACTION_NEXT"
         const val ACTION_PREVIOUS = "ACTION_PREVIOUS"
 

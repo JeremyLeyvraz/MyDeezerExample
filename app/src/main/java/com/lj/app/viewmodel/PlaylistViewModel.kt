@@ -99,6 +99,7 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_DURATION))
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_CURRENT_POSITION))
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_APPLICATION_RESUME_RESULT))
+        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_PAUSE_RESULT))
 
         val playIntent = Intent(context, PlayerService::class.java)
         playIntent.action = PlayerService.ACTION_APPLICATION_RESUME
@@ -113,8 +114,8 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         playIntent.action = PlayerService.ACTION_PLAY
         playIntent.putExtra("musicId", musicId)
         context?.startService(playIntent)
-        isPlaying.value = true
-        isPause.value = false
+//        isPlaying.value = true
+//        isPause.value = false
     }
 
     /**
@@ -124,7 +125,7 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         val pauseIntent = Intent(context, PlayerService::class.java)
         pauseIntent.action = PlayerService.ACTION_PAUSE
         context?.startService(pauseIntent)
-        isPause.value = !isPause.value
+        //isPause.value = !isPause.value
     }
 
     /**
@@ -134,8 +135,8 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         val nextIntent = Intent(context, PlayerService::class.java)
         nextIntent.action = PlayerService.ACTION_NEXT
         context?.startService(nextIntent)
-        isPlaying.value = true
-        isPause.value = false
+//        isPlaying.value = true
+//        isPause.value = false
     }
 
     /**
@@ -145,8 +146,8 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
         val nextIntent = Intent(context, PlayerService::class.java)
         nextIntent.action = PlayerService.ACTION_PREVIOUS
         context?.startService(nextIntent)
-        isPlaying.value = true
-        isPause.value = false
+//        isPlaying.value = true
+//        isPause.value = false
     }
 
     /**

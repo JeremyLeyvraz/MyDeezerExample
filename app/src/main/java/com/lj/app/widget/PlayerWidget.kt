@@ -30,8 +30,10 @@ import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
 import androidx.glance.layout.ContentScale
 import androidx.glance.layout.Row
+import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
+import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.text.Text
@@ -59,55 +61,74 @@ class PlayerWidget : GlanceAppWidget() {
 
     @Composable
     private fun MyContent() {
-        Row(modifier = GlanceModifier.background(Color.LightGray).fillMaxWidth(),
+        Row(modifier = GlanceModifier.background(Color(55,0,255)).fillMaxWidth().height(80.dp),
             verticalAlignment = Alignment.CenterVertically) {
-            Column(modifier = GlanceModifier.defaultWeight()) {
-                Text(
-                    text = viewModel.currentMusic.value?.name ?: "undefined",
-                    style = TextStyle(
-                        fontWeight = androidx.glance.text.FontWeight.Bold,
-                        color = ColorProvider(Color.Black),
-                        fontSize = 20.sp,
-                    )
+            viewModel.currentMusic.value?.let {
+                Image(
+                    provider = ImageProvider(it.cover),
+                    contentDescription = LocalContext.current.resources.getString(R.string.app_name),
+                    modifier = GlanceModifier.size(80.dp, 80.dp).clickable {
+                        actionLaunchActivity()
+                    },
+                    contentScale = ContentScale.FillBounds
                 )
-                Text(
-                    text = viewModel.currentMusic.value?.artist ?: "undefined",
-                    style = TextStyle(
-                        fontWeight = androidx.glance.text.FontWeight.Bold,
-                        color = ColorProvider(Color.Black),
-                        fontSize = 20.sp,
-                    )
-                )
-            }
 
-            Image(
-                provider = ImageProvider(R.drawable.ic_launcher_foreground),
-                contentDescription = LocalContext.current.resources.getString(R.string.app_name),
-                modifier = GlanceModifier.size(40.dp, 40.dp).clickable {
-                    viewModel.previous()
-                },
-                contentScale = ContentScale.FillBounds
-            )
-            Image(
-                provider = ImageProvider(R.drawable.ic_launcher_foreground),
-                contentDescription = LocalContext.current.resources.getString(R.string.app_name),
-                modifier = GlanceModifier.size(40.dp, 40.dp).clickable {
-                    viewModel.pause()
-                },
-                contentScale = ContentScale.FillBounds
-            )
-            Image(
-                provider = ImageProvider(R.drawable.ic_launcher_foreground),
-                contentDescription = LocalContext.current.resources.getString(R.string.app_name),
-                modifier = GlanceModifier.size(40.dp, 40.dp).clickable{
-                    viewModel.next()
-                },
-                contentScale = ContentScale.FillBounds
-            )
+                Column(modifier = GlanceModifier.defaultWeight().padding(4.dp)) {
+                    Text(
+                        text = it.name,
+                        style = TextStyle(
+                            fontWeight = androidx.glance.text.FontWeight.Medium,
+                            color = ColorProvider(Color.Black),
+                            fontSize = 16.sp,
+                        ),
+                        maxLines = 1
+                    )
+                    Text(
+                        text = it.artist ?: "undefined",
+                        style = TextStyle(
+                            fontWeight = androidx.glance.text.FontWeight.Normal,
+                            color = ColorProvider(Color.Black),
+                            fontSize = 16.sp,
+                        ),
+                        maxLines = 1
+                    )
+
+                    Row(horizontalAlignment = Alignment.Horizontal.CenterHorizontally, modifier = GlanceModifier.fillMaxWidth()) {
+                        Spacer(modifier = GlanceModifier.defaultWeight())
+                        Image(
+                            provider = ImageProvider(R.drawable.btn_previous),
+                            contentDescription = LocalContext.current.resources.getString(R.string.app_name),
+                            modifier = GlanceModifier.size(32.dp, 32.dp).clickable {
+                                viewModel.previous()
+                            },
+                            contentScale = ContentScale.FillBounds
+                        )
+                        Spacer(modifier = GlanceModifier.defaultWeight())
+                        Image(
+                            provider = ImageProvider(if (viewModel.isPause.value) R.drawable.btn_play else R.drawable.btn_pause),
+                            contentDescription = LocalContext.current.resources.getString(R.string.app_name),
+                            modifier = GlanceModifier.size(32.dp, 32.dp).clickable {
+                                viewModel.pause()
+                            },
+                            contentScale = ContentScale.FillBounds
+                        )
+                        Spacer(modifier = GlanceModifier.defaultWeight())
+                        Image(
+                            provider = ImageProvider(R.drawable.btn_next),
+                            contentDescription = LocalContext.current.resources.getString(R.string.app_name),
+                            modifier = GlanceModifier.size(32.dp, 32.dp).clickable {
+                                viewModel.next()
+                            },
+                            contentScale = ContentScale.FillBounds
+                        )
+                        Spacer(modifier = GlanceModifier.defaultWeight())
+                    }
+                }
+
+            }
 
         }
     }
 
-
-    private fun actionLaunchActivity(): Action = actionStartActivity(MainActivity::class.java)
+    private fun actionLaunchActivity(): Action = actionLaunchActivity()
 }
