@@ -139,7 +139,7 @@ class PlayerService: Service() {
 
                 val responseIntent = Intent()
                 responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
-                responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
+                responseIntent.putExtra("isPlaying", true)
                 sendBroadcast(responseIntent)
             }
             // Load and start playing the previous track
@@ -149,7 +149,7 @@ class PlayerService: Service() {
 
                 val responseIntent = Intent()
                 responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
-                responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
+                responseIntent.putExtra("isPlaying", true)
                 sendBroadcast(responseIntent)
             }
             // Load and start playing the track at a specific progress

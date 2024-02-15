@@ -59,6 +59,8 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
                 val isPlayingExtra = intent.getBooleanExtra("isPlaying", false)
                 isPlaying.value = currentMusic.value != null
                 isPause.value = !isPlayingExtra
+
+
             }
         }
     }

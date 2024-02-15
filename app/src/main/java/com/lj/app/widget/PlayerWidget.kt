@@ -71,7 +71,7 @@ class PlayerWidget : GlanceAppWidget() {
                         maxLines = 1
                     )
                     Text(
-                        text = it.artist ?: "undefined",
+                        text = it.artist,
                         style = TextStyle(
                             fontWeight = androidx.glance.text.FontWeight.Normal,
                             color = ColorProvider(Color.Black),
