@@ -61,14 +61,12 @@ class PlayerService: Service() {
             override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                 super.onMediaItemTransition(mediaItem, reason)
                 mediaItem?.let {
-                    var responseIntent = Intent()
-                    responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
-                    responseIntent.putExtra("musicId", mediaItem.mediaId)
-                    sendBroadcast(responseIntent)
-
-                    responseIntent = Intent()
-                    responseIntent.action = ACTION_DURATION
+                    val responseIntent = Intent()
+                    responseIntent.action = ANSWER_METADATA
+                    responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
                     responseIntent.putExtra("duration", exoPlayer?.duration)
+                    responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
+                    responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
                     sendBroadcast(responseIntent)
                 }
             }
@@ -76,10 +74,6 @@ class PlayerService: Service() {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 super.onPlayerStateChanged(playWhenReady, playbackState)
                 if (playbackState == Player.STATE_READY) {
-                    var responseIntent = Intent()
-                    responseIntent.action = ACTION_DURATION
-                    responseIntent.putExtra("duration", exoPlayer?.duration)
-                    sendBroadcast(responseIntent)
 
                     currentPositionJob?.cancel()
                     // Start a coroutine to update the current duration at regular intervals
@@ -87,9 +81,10 @@ class PlayerService: Service() {
 
                         while (exoPlayer?.currentPosition!! < exoPlayer?.duration!!) {
                             exoPlayer?.let {
-                                responseIntent = Intent()
-                                responseIntent.action = ACTION_CURRENT_POSITION
+                                var responseIntent = Intent()
+                                responseIntent.action = UPDATE_PROGRESS
                                 responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
+                                responseIntent.putExtra("duration", exoPlayer?.duration ?: 0L)
                                 sendBroadcast(responseIntent)
                             }
                             delay(1000)
@@ -112,7 +107,7 @@ class PlayerService: Service() {
      */
     private fun handleIntent(intent: Intent?) {
         when (intent?.action) {
-            ACTION_PLAY -> {
+            REQUEST_PLAY -> {
                 val musicId = intent.getStringExtra("musicId")
                 val index = getIndex(musicId!!)
                 exoPlayer?.seekTo(index, C.TIME_UNSET)
@@ -120,68 +115,53 @@ class PlayerService: Service() {
                 exoPlayer?.playWhenReady = true
 
                 val responseIntent = Intent()
-                responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
+                responseIntent.action = ANSWER_METADATA
+                responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
+                responseIntent.putExtra("duration", exoPlayer?.duration)
+                responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
                 responseIntent.putExtra("isPlaying", true)
                 sendBroadcast(responseIntent)
             }
-            ACTION_PAUSE -> {
+            REQUEST_PAUSE -> {
                 exoPlayer?.playWhenReady = !exoPlayer!!.isPlaying
-
-                val responseIntent = Intent()
-                responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
-                responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
-                sendBroadcast(responseIntent)
             }
-            // Load and start playing the next track
-            ACTION_NEXT -> {
-                exoPlayer?.seekToNextMediaItem()
-                exoPlayer?.play()
-
-                val responseIntent = Intent()
-                responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
-                responseIntent.putExtra("isPlaying", true)
-                sendBroadcast(responseIntent)
-            }
-            // Load and start playing the previous track
-            ACTION_PREVIOUS -> {
+            REQUEST_PREVIOUS -> {
                 exoPlayer?.seekToPreviousMediaItem()
                 exoPlayer?.play()
 
                 val responseIntent = Intent()
-                responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
+                responseIntent.action = ANSWER_METADATA
+                responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
+                responseIntent.putExtra("duration", exoPlayer?.duration)
+                responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
                 responseIntent.putExtra("isPlaying", true)
                 sendBroadcast(responseIntent)
             }
-            // Load and start playing the track at a specific progress
-            ACTION_GOTO -> {
+            REQUEST_NEXT -> {
+                exoPlayer?.seekToNextMediaItem()
+                exoPlayer?.play()
+
+                val responseIntent = Intent()
+                responseIntent.action = ANSWER_METADATA
+                responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
+                responseIntent.putExtra("duration", exoPlayer?.duration)
+                responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
+                responseIntent.putExtra("isPlaying", true)
+                sendBroadcast(responseIntent)
+            }
+            REQUEST_GOTO -> {
                 val time = intent.getFloatExtra("progress", 0f)
                 val newTime = time * exoPlayer!!.duration / 100.0
                 exoPlayer?.seekTo(newTime.toLong())
             }
-            // Send current music ID and playback status
-            ACTION_APPLICATION_RESUME -> {
-                var responseIntent = Intent()
-                if (exoPlayer!!.isPlaying || exoPlayer!!.currentPosition.toInt() != 0) {
-
-                    responseIntent.action = ACTION_CURRENT_MUSIC_RESULT
-                    responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
-                    sendBroadcast(responseIntent)
-
-                    responseIntent = Intent()
-                    responseIntent.action = ACTION_CURRENT_POSITION
-                    responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
-                    sendBroadcast(responseIntent)
-
-                    responseIntent = Intent()
-                    responseIntent.action = ACTION_DURATION
-                    responseIntent.putExtra("duration", exoPlayer?.duration)
-                    sendBroadcast(responseIntent)
-
-                    responseIntent = Intent()
-                    responseIntent.action = ACTION_APPLICATION_RESUME_RESULT
-                    responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
-                    sendBroadcast(responseIntent)
-                }
+            REQUEST_METADATA -> {
+                val responseIntent = Intent()
+                responseIntent.action = ANSWER_METADATA
+                responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
+                responseIntent.putExtra("duration", exoPlayer?.duration)
+                responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
+                responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
+                sendBroadcast(responseIntent)
             }
         }
     }
@@ -271,23 +251,19 @@ class PlayerService: Service() {
      */
     companion object {
 
-        const val ACTION_PLAY = "ACTION_PLAY"
+        const val REQUEST_PLAY = "REQUEST_PLAY"
+        const val REQUEST_PAUSE = "REQUEST_PAUSE"
+        const val REQUEST_NEXT = "REQUEST_NEXT"
+        const val REQUEST_PREVIOUS = "REQUEST_PREVIOUS"
+        const val REQUEST_GOTO = "REQUEST_GOTO"
 
-        const val ACTION_PAUSE = "ACTION_PAUSE"
-        const val ACTION_PAUSE_RESULT = "ACTION_PAUSE_RESULT"
+        const val STATE_PLAY = "STATE_PLAY"
+        const val STATE_PAUSE = "STATE_PAUSE"
+        const val STATE_REPRISE = "STATE_REPRISE"
 
+        const val REQUEST_METADATA = "REQUEST_METADATA"
+        const val ANSWER_METADATA = "ANSWER_METADATA"
 
-        const val ACTION_NEXT = "ACTION_NEXT"
-        const val ACTION_PREVIOUS = "ACTION_PREVIOUS"
-
-        const val ACTION_GOTO = "ACTION_GOTO"
-
-        const val ACTION_DURATION = "ACTION_DURATION"
-        const val ACTION_CURRENT_POSITION = "ACTION_CURRENT_POSITION"
-
-        const val ACTION_CURRENT_MUSIC_RESULT = "ACTION_CURRENT_MUSIC_RESULT"
-
-        const val ACTION_APPLICATION_RESUME = "ACTION_APPLICATION_RESUME"
-        const val ACTION_APPLICATION_RESUME_RESULT = "ACTION_APPLICATION_RESUME_RESULT"
+        const val UPDATE_PROGRESS = "UPDATE_PROGRESS"
     }
 }
