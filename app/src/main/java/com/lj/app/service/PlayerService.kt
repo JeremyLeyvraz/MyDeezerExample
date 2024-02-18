@@ -66,7 +66,7 @@ class PlayerService: Service() {
                     responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
                     responseIntent.putExtra("duration", exoPlayer?.duration)
                     responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
-                    responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
+                    responseIntent.putExtra("isPlaying", exoPlayer!!.playWhenReady)
                     sendBroadcast(responseIntent)
                 }
             }
@@ -119,11 +119,19 @@ class PlayerService: Service() {
                 responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
                 responseIntent.putExtra("duration", exoPlayer?.duration)
                 responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
-                responseIntent.putExtra("isPlaying", true)
+                responseIntent.putExtra("isPlaying", exoPlayer!!.playWhenReady)
                 sendBroadcast(responseIntent)
             }
             REQUEST_PAUSE -> {
                 exoPlayer?.playWhenReady = !exoPlayer!!.isPlaying
+
+                val responseIntent = Intent()
+                responseIntent.action = ANSWER_METADATA
+                responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
+                responseIntent.putExtra("duration", exoPlayer?.duration)
+                responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
+                responseIntent.putExtra("isPlaying", exoPlayer!!.playWhenReady)
+                sendBroadcast(responseIntent)
             }
             REQUEST_PREVIOUS -> {
                 exoPlayer?.seekToPreviousMediaItem()
@@ -134,7 +142,7 @@ class PlayerService: Service() {
                 responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
                 responseIntent.putExtra("duration", exoPlayer?.duration)
                 responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
-                responseIntent.putExtra("isPlaying", true)
+                responseIntent.putExtra("isPlaying", exoPlayer!!.playWhenReady)
                 sendBroadcast(responseIntent)
             }
             REQUEST_NEXT -> {
@@ -146,7 +154,7 @@ class PlayerService: Service() {
                 responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
                 responseIntent.putExtra("duration", exoPlayer?.duration)
                 responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
-                responseIntent.putExtra("isPlaying", true)
+                responseIntent.putExtra("isPlaying", exoPlayer!!.playWhenReady)
                 sendBroadcast(responseIntent)
             }
             REQUEST_GOTO -> {
@@ -160,7 +168,7 @@ class PlayerService: Service() {
                 responseIntent.putExtra("musicId", exoPlayer?.currentMediaItem?.mediaId)
                 responseIntent.putExtra("duration", exoPlayer?.duration)
                 responseIntent.putExtra("currentPosition", exoPlayer?.currentPosition ?: 0L)
-                responseIntent.putExtra("isPlaying", exoPlayer!!.isPlaying)
+                responseIntent.putExtra("isPlaying", exoPlayer!!.playWhenReady)
                 sendBroadcast(responseIntent)
             }
         }

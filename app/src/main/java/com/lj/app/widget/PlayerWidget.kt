@@ -112,6 +112,8 @@ class PlayerWidget : GlanceAppWidget() {
                     }
                 }
 
+            } ?: run {
+                Text(text = "Open app")
             }
 
         }
