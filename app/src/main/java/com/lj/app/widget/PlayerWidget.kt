@@ -1,6 +1,8 @@
 package com.lj.app.widget
 
 import android.content.Context
+import android.content.Intent
+import android.widget.RemoteViews
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -10,7 +12,6 @@ import androidx.glance.GlanceModifier
 import androidx.glance.Image
 import androidx.glance.ImageProvider
 import androidx.glance.LocalContext
-import androidx.glance.action.Action
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.provideContent
@@ -27,12 +28,16 @@ import androidx.glance.layout.size
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import com.lj.app.MainActivity
 import com.lj.app.R
 import com.lj.app.viewmodel.PlaylistViewModel
 
 class PlayerWidget : GlanceAppWidget() {
 
+
     private var viewModel = PlaylistViewModel()
+
+
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         // Load data needed to render the AppWidget.
@@ -48,6 +53,9 @@ class PlayerWidget : GlanceAppWidget() {
 
     @Composable
     private fun MyContent() {
+
+        val context = LocalContext.current
+
         Row(modifier = GlanceModifier.background(Color(55,0,255)).fillMaxWidth().height(80.dp),
             verticalAlignment = Alignment.CenterVertically) {
             viewModel.currentMusic.value?.let {
@@ -55,7 +63,7 @@ class PlayerWidget : GlanceAppWidget() {
                     provider = ImageProvider(it.cover),
                     contentDescription = LocalContext.current.resources.getString(R.string.app_name),
                     modifier = GlanceModifier.size(80.dp, 80.dp).clickable {
-                        actionLaunchActivity()
+                        openApp(context)
                     },
                     contentScale = ContentScale.FillBounds
                 )
@@ -80,7 +88,10 @@ class PlayerWidget : GlanceAppWidget() {
                         maxLines = 1
                     )
 
-                    Row(horizontalAlignment = Alignment.Horizontal.CenterHorizontally, modifier = GlanceModifier.fillMaxWidth()) {
+                    Row(
+                        horizontalAlignment = Alignment.Horizontal.CenterHorizontally,
+                        modifier = GlanceModifier.fillMaxWidth()
+                    ) {
                         Spacer(modifier = GlanceModifier.defaultWeight())
                         Image(
                             provider = ImageProvider(R.drawable.btn_previous),
@@ -111,13 +122,16 @@ class PlayerWidget : GlanceAppWidget() {
                         Spacer(modifier = GlanceModifier.defaultWeight())
                     }
                 }
-
             } ?: run {
                 Text(text = "Open app")
             }
-
         }
     }
 
-    private fun actionLaunchActivity(): Action = actionLaunchActivity()
+    private fun openApp(context: Context) {
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        context.startActivity(intent)
+    }
+
 }
