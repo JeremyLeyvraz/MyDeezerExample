@@ -2,7 +2,6 @@ package com.lj.app.widget
 
 import android.content.Context
 import android.content.Intent
-import android.widget.RemoteViews
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -43,7 +42,6 @@ class PlayerWidget : GlanceAppWidget() {
         // Load data needed to render the AppWidget.
         // Use `withContext` to switch to another thread for long running
         // operations.
-
         provideContent {
             viewModel.init(context)
             // create your AppWidget here

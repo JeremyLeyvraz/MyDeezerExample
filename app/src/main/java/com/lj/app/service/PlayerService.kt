@@ -266,8 +266,8 @@ class PlayerService: Service() {
         const val REQUEST_GOTO = "REQUEST_GOTO"
 
         const val STATE_PLAY = "STATE_PLAY"
-        const val STATE_PAUSE = "STATE_PAUSE"
-        const val STATE_REPRISE = "STATE_REPRISE"
+//        const val STATE_PAUSE = "STATE_PAUSE"
+//        const val STATE_REPRISE = "STATE_REPRISE"
 
         const val REQUEST_METADATA = "REQUEST_METADATA"
         const val ANSWER_METADATA = "ANSWER_METADATA"

@@ -105,8 +105,6 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
     fun init(context: Context) {
         this.context = context
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.STATE_PLAY))
-        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.STATE_PAUSE))
-        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.STATE_REPRISE))
 
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ANSWER_METADATA))
         context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.UPDATE_PROGRESS))
