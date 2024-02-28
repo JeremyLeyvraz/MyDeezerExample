@@ -28,6 +28,9 @@ buildscript {
         // Android test
         espresso = "3.5.1"
         android_junit = "1.1.5"
+
+        // Media 3
+        media_version = "1.2.1"
     }
     repositories {
         google()
