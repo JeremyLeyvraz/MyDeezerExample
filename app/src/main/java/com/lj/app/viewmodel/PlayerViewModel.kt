@@ -1,14 +1,16 @@
 package com.lj.app.viewmodel
 
+import android.content.Context
+import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.net.toUri
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import com.lj.app.model.Audio
+import com.lj.app.model.Music
+import com.lj.app.repository.AudioRepository
 import com.lj.app.service.AudioState
 import com.lj.app.service.PlayerEvent
 import com.lj.app.service.PlayerServiceHandler
@@ -21,22 +23,24 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private val audioDummy = Audio(
-    "".toUri(), "", 0L, "", "", 0, ""
-)
+private val musicDummy = Music()
 
 @HiltViewModel
 class PlayerViewModel  @Inject constructor(
     private val audioServiceHandler: PlayerServiceHandler,
-    private val repository: AudioRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    lateinit var mContext: Context
+
+    private val repository: AudioRepository = AudioRepository()
+
     var duration by savedStateHandle.saveable { mutableStateOf(0L) }
     var progress by savedStateHandle.saveable { mutableStateOf(0f) }
     var progressString by savedStateHandle.saveable { mutableStateOf("00:00") }
     var isPlaying by savedStateHandle.saveable { mutableStateOf(false) }
-    var currentSelectedAudio by savedStateHandle.saveable { mutableStateOf(audioDummy) }
-    var audioList by savedStateHandle.saveable { mutableStateOf(listOf<Audio>()) }
+    var currentSelectedAudio by savedStateHandle.saveable { mutableStateOf(musicDummy) }
+    var musicList by savedStateHandle.saveable { mutableStateOf(listOf<Music>()) }
 
     private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Initial)
     val uiState: StateFlow<UIState> = _uiState.asStateFlow()
@@ -54,7 +58,7 @@ class PlayerViewModel  @Inject constructor(
                     is AudioState.Playing -> isPlaying = mediaState.isPlaying
                     is AudioState.Progress -> calculateProgressValue(mediaState.progress)
                     is AudioState.CurrentPlaying -> {
-                        currentSelectedAudio = audioList[mediaState.mediaItemIndex]
+                        currentSelectedAudio = musicList[mediaState.mediaItemIndex]
                     }
 
                     is AudioState.Ready -> {
@@ -63,28 +67,30 @@ class PlayerViewModel  @Inject constructor(
                     }
                 }
             }
-
-
         }
     }
 
     private fun loadAudioData() {
         viewModelScope.launch {
             val audio = repository.getAudioData()
-            audioList = audio
+            musicList = audio
             setMediaItems()
         }
     }
 
     private fun setMediaItems() {
-        audioList.map { audio ->
+
+        musicList.map { music ->
+
+            val path = "android.resource://" + mContext.packageName + "/" + music.music
             MediaItem.Builder()
-                .setUri(audio.uri)
+                .setUri(Uri.parse(path))
+                .setMediaId(music.music.toString())
                 .setMediaMetadata(
                     MediaMetadata.Builder()
-                        .setAlbumArtist(audio.artist)
-                        .setDisplayTitle(audio.title)
-                        .setSubtitle(audio.displayName)
+                        .setAlbumArtist(music.artist)
+                        .setDisplayTitle(music.name)
+                        .setSubtitle(music.artist)
                         .build()
                 )
                 .build()
@@ -149,10 +155,7 @@ class PlayerViewModel  @Inject constructor(
         }
         super.onCleared()
     }
-
-
 }
-
 
 sealed class UIEvents {
     object PlayPause : UIEvents()

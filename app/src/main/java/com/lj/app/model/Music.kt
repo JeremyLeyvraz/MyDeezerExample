@@ -9,9 +9,9 @@ package com.lj.app.model
  * @property guid A unique identifier for the music.
  */
 data class Music(
-    val name: String,
-    val artist: String,
-    val music: Int,
-    val cover: Int,
-    val guid: String
+    val name: String = "",
+    val artist: String = "",
+    val music: Int = 0,
+    val cover: Int = 0,
+    val guid: String = ""
 )

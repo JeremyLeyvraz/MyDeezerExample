@@ -13,11 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
+import com.lj.app.composable.HomeScreen
 import com.lj.app.navigation.MainNavigation
 import com.lj.app.service.PlayerService
 import com.lj.app.viewmodel.PlayerViewModel
@@ -38,6 +40,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+
+                viewModel.mContext = LocalContext.current
+
                 // A surface container using the 'background' color from the theme
                 val permissionState = rememberPermissionState(
                     permission = Manifest.permission.READ_EXTERNAL_STORAGE
@@ -62,7 +67,7 @@ class MainActivity : ComponentActivity() {
                         progress = viewModel.progress,
                         onProgress = { viewModel.onUiEvents(UIEvents.SeekTo(it)) },
                         isAudioPlaying = viewModel.isPlaying,
-                        audiList = viewModel.audioList,
+                        audiList = viewModel.musicList,
                         currentPlayingAudio = viewModel.currentSelectedAudio,
                         onStart = {
                             viewModel.onUiEvents(UIEvents.PlayPause)
