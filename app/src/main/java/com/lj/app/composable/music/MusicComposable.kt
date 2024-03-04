@@ -3,6 +3,7 @@ package com.lj.app.composable.music
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import com.lj.app.viewmodel.PlayerViewModel
 import com.lj.app.viewmodel.PlaylistViewModel
 
 /**
@@ -11,7 +12,7 @@ import com.lj.app.viewmodel.PlaylistViewModel
  * @param viewModel The view model containing data for the music playlist.
  */
 @Composable
-fun MusicComposable (windowSizeClass: WindowSizeClass, viewModel: PlaylistViewModel) {
+fun MusicComposable (windowSizeClass: WindowSizeClass, viewModel: PlayerViewModel) {
 
     when (windowSizeClass.widthSizeClass) {
         // Compact view for portrait mode on phones
@@ -20,11 +21,11 @@ fun MusicComposable (windowSizeClass: WindowSizeClass, viewModel: PlaylistViewMo
         }
         // Medium view for portrait mode on tablets
         WindowWidthSizeClass.Medium -> {
-            MusicMediumComposable(viewModel)
+            //MusicMediumComposable(viewModel)
         }
         // Expanded view for landscape mode on phones and tablets
         WindowWidthSizeClass.Expanded -> {
-            MusicExpandedComposable(viewModel)
+            //MusicExpandedComposable(viewModel)
         }
     }
 }

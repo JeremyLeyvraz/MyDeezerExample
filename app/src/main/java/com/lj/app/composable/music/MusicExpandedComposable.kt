@@ -120,7 +120,7 @@ fun MusicExpandedComposable(viewModel: PlaylistViewModel) {
                     )
 
                     // Playback controls (previous, play/pause, next)
-                    RowMainCommandComposable(viewModel, Modifier.align(Alignment.CenterHorizontally))
+                    //RowMainCommandComposable(viewModel, Modifier.align(Alignment.CenterHorizontally))
 
                     Spacer(modifier = Modifier.weight(1f))
 

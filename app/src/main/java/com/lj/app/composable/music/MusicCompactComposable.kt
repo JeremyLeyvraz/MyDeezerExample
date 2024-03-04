@@ -24,6 +24,7 @@ import com.lj.app.R
 import com.lj.app.composable.image.DisplayImage
 import com.lj.app.composable.player.RowMainCommandComposable
 import com.lj.app.converter.formatLongToMinutesSeconds
+import com.lj.app.viewmodel.PlayerViewModel
 import com.lj.app.viewmodel.PlaylistViewModel
 
 /**
@@ -31,7 +32,7 @@ import com.lj.app.viewmodel.PlaylistViewModel
  * @param viewModel The view model containing data for the playlist.
  */
 @Composable
-fun MusicCompactComposable(viewModel: PlaylistViewModel) {
+fun MusicCompactComposable(viewModel: PlayerViewModel) {
 
     // Colors for UI elements
     val backgroundColor = LocalContext.current.resources.getColor(R.color.purple_700, null)
@@ -40,7 +41,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color(backgroundColor))) {
-        viewModel.currentMusic.value?.let {
+        viewModel.currentSelectedAudio.let {
 
             // Display image
             Surface(modifier = Modifier
@@ -86,7 +87,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
             .padding(start = 16.dp, end = 16.dp)) {
 
             Text(
-                text = formatLongToMinutesSeconds(viewModel.currentPosition.value),
+                text = formatLongToMinutesSeconds(viewModel.progress.toLong()),
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontSize = 12.sp,
                     color = textColor,
@@ -97,7 +98,7 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = formatLongToMinutesSeconds(viewModel.duration.value - viewModel.currentPosition.value),
+                text = formatLongToMinutesSeconds((viewModel.duration - viewModel.progress).toLong()),
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontSize = 12.sp,
                     color = textColor,
@@ -108,9 +109,9 @@ fun MusicCompactComposable(viewModel: PlaylistViewModel) {
 
         // Seekbar
         Slider(
-            value = viewModel.progress.value,
+            value = viewModel.progress,
             onValueChange = {
-                viewModel.goTo(it)
+                //viewModel.goTo(it)
             },
             valueRange = 0f..100f,
             steps = 100,

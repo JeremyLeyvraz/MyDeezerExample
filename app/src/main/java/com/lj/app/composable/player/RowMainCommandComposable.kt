@@ -15,7 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.lj.app.viewmodel.PlayerViewModel
 import com.lj.app.viewmodel.PlaylistViewModel
+import com.lj.app.viewmodel.UIEvents
 
 /**
  * A composable function responsible for displaying the main playback control buttons in a row layout.
@@ -23,7 +25,7 @@ import com.lj.app.viewmodel.PlaylistViewModel
  * @param modifier Optional modifier for the row layout.
  */
 @Composable
-fun RowMainCommandComposable(viewModel: PlaylistViewModel, modifier: Modifier = Modifier) {
+fun RowMainCommandComposable(viewModel: PlayerViewModel, modifier: Modifier = Modifier) {
 
     // Color for icon tint
     val iconColor = Color.White
@@ -32,7 +34,7 @@ fun RowMainCommandComposable(viewModel: PlaylistViewModel, modifier: Modifier = 
 
         // Previous button
         IconButton(
-            onClick = { viewModel.previous() },
+            onClick = { viewModel.onUiEvents(UIEvents.Backward) },
             modifier = Modifier
                 .padding(8.dp)
                 .align(Alignment.CenterVertically)
@@ -49,17 +51,17 @@ fun RowMainCommandComposable(viewModel: PlaylistViewModel, modifier: Modifier = 
         IconButton(
             onClick =
             {
-                viewModel.pause()
+                viewModel.onUiEvents(UIEvents.PlayPause)
             },
             modifier = Modifier
                 .padding(8.dp)
                 .size(100.dp)
                 .align(Alignment.CenterVertically)
         ) {
-            var icon = Icons.Default.Pause
+            var icon = Icons.Default.PlayArrow
             var description = "Pause"
-            if (viewModel.isPause.value) {
-                icon = Icons.Default.PlayArrow
+            if (viewModel.isPlaying) {
+                icon = Icons.Default.Pause
                 description = "Play"
             }
             Icon(
@@ -72,7 +74,7 @@ fun RowMainCommandComposable(viewModel: PlaylistViewModel, modifier: Modifier = 
 
         // Next button
         IconButton(
-            onClick = { viewModel.next() },
+            onClick = { viewModel.onUiEvents(UIEvents.SeekToNext) },
             modifier = Modifier
                 .padding(8.dp)
                 .align(Alignment.CenterVertically)

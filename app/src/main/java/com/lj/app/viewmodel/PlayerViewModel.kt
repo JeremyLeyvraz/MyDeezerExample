@@ -54,13 +54,19 @@ class PlayerViewModel  @Inject constructor(
         viewModelScope.launch {
             audioServiceHandler.audioState.collectLatest { mediaState ->
                 when (mediaState) {
-                    AudioState.Initial -> _uiState.value = UIState.Initial
-                    is AudioState.Buffering -> calculateProgressValue(mediaState.progress)
+                    AudioState.Initial ->  {
+                        _uiState.value = UIState.Initial
+                    }
+                    is AudioState.Buffering -> {
+                        calculateProgressValue(mediaState.progress)
+                    }
                     is AudioState.Playing ->  {
                         isPlaying = mediaState.isPlaying
                         isServiceEnable = true
                     }
-                    is AudioState.Progress -> calculateProgressValue(mediaState.progress)
+                    is AudioState.Progress -> {
+                        calculateProgressValue(mediaState.progress)
+                    }
                     is AudioState.CurrentPlaying -> {
                         currentSelectedAudio = musicList[mediaState.mediaItemIndex]
                     }

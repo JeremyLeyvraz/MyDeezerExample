@@ -32,8 +32,9 @@ fun MainNavigation(windowSizeClass: WindowSizeClass) {
         // Define a composable for the music destination
         composable(MUSIC_DESTINATION)
         {
-            val viewModel = hiltViewModel<PlaylistViewModel>()
-            viewModel.init(LocalContext.current)
+            // TODO Crash: pb synchro entre l'execution du init du vm et la generation du composable
+            val viewModel = hiltViewModel<PlayerViewModel>()
+            viewModel.mContext = LocalContext.current
             MusicComposable(windowSizeClass, viewModel)
         }
     }
