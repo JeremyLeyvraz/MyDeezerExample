@@ -62,27 +62,27 @@ fun MusicExpandedComposable(viewModel: PlaylistViewModel) {
                     Spacer(modifier = Modifier.weight(1f))
 
                     // Music title and artist name
-                    Text(
-                        text = it.name,
-                        style = MaterialTheme.typography.labelLarge.copy(
-                            color = textColor,
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                    )
-
-                    Text(
-                        text = it.artist,
-                        style = MaterialTheme.typography.labelLarge.copy(
-                            color = textColor,
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                    )
+//                    Text(
+//                        text = it.name,
+//                        style = MaterialTheme.typography.labelLarge.copy(
+//                            color = textColor,
+//                            fontSize = 32.sp,
+//                            fontWeight = FontWeight.Bold
+//                        ),
+//                        modifier = Modifier
+//                            .align(Alignment.CenterHorizontally)
+//                    )
+//
+//                    Text(
+//                        text = it.artist,
+//                        style = MaterialTheme.typography.labelLarge.copy(
+//                            color = textColor,
+//                            fontSize = 16.sp,
+//                            fontWeight = FontWeight.Bold
+//                        ),
+//                        modifier = Modifier
+//                            .align(Alignment.CenterHorizontally)
+//                    )
 
                     // Current position and remaining time
                     Row {

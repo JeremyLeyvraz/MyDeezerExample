@@ -84,21 +84,21 @@ fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: Pla
                         .weight(1f)
                 ) {
                     Column {
-                        Text(
-                            text = it.name,
-                            style = MaterialTheme.typography.labelLarge.copy(
-                                color = textColor,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp,
-                            )
-                        )
-                        Text(
-                            text = it.artist,
-                            style = MaterialTheme.typography.labelLarge.copy(
-                                color = textColor,
-                                fontSize = 14.sp,
-                            )
-                        )
+//                        Text(
+//                            text = it.name,
+//                            style = MaterialTheme.typography.labelLarge.copy(
+//                                color = textColor,
+//                                fontWeight = FontWeight.Bold,
+//                                fontSize = 20.sp,
+//                            )
+//                        )
+//                        Text(
+//                            text = it.artist,
+//                            style = MaterialTheme.typography.labelLarge.copy(
+//                                color = textColor,
+//                                fontSize = 14.sp,
+//                            )
+//                        )
                     }
                 }
             }

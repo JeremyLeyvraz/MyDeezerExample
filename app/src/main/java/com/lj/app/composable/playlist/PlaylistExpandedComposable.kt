@@ -81,7 +81,7 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
                     // Display music item
                     Surface(
                         modifier = Modifier.background(backgroundColor),
-                        onClick = { viewModel.play(item.name) }) {
+                        onClick = { /*viewModel.play(item.name)*/ }) {
                         MusicItemComposable(item, viewModel.currentMusicName.value == item.name)
                     }
 

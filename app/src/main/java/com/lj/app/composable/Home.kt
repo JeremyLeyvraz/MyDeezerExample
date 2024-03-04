@@ -103,19 +103,19 @@ fun AudioItem(
                 verticalArrangement = Arrangement.Center
             ) {
                 Spacer(modifier = Modifier.size(4.dp))
-                Text(
-                    text = audio.name,
-                    style = MaterialTheme.typography.titleLarge,
-                    overflow = TextOverflow.Clip,
-                    maxLines = 1
-                )
-                Spacer(modifier = Modifier.size(4.dp))
-                Text(
-                    text = audio.artist,
-                    style = MaterialTheme.typography.bodySmall,
-                    maxLines = 1,
-                    overflow = TextOverflow.Clip
-                )
+//                Text(
+//                    text = audio.name,
+//                    style = MaterialTheme.typography.titleLarge,
+//                    overflow = TextOverflow.Clip,
+//                    maxLines = 1
+//                )
+//                Spacer(modifier = Modifier.size(4.dp))
+//                Text(
+//                    text = audio.artist,
+//                    style = MaterialTheme.typography.bodySmall,
+//                    maxLines = 1,
+//                    overflow = TextOverflow.Clip
+//                )
 
             }
             Text(
@@ -224,22 +224,22 @@ fun ArtistInfo(
         ) {}
         Spacer(modifier = Modifier.size(4.dp))
         Column {
-            Text(
-                text = audio.name,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleLarge,
-                overflow = TextOverflow.Clip,
-                modifier = Modifier.weight(1f),
-                maxLines = 1
-            )
-            Spacer(modifier = Modifier.size(4.dp))
-            Text(
-                text = audio.artist,
-                fontWeight = FontWeight.Normal,
-                style = MaterialTheme.typography.bodySmall,
-                overflow = TextOverflow.Clip,
-                maxLines = 1
-            )
+//            Text(
+//                text = audio.name,
+//                fontWeight = FontWeight.Bold,
+//                style = MaterialTheme.typography.titleLarge,
+//                overflow = TextOverflow.Clip,
+//                modifier = Modifier.weight(1f),
+//                maxLines = 1
+//            )
+//            Spacer(modifier = Modifier.size(4.dp))
+//            Text(
+//                text = audio.artist,
+//                fontWeight = FontWeight.Normal,
+//                style = MaterialTheme.typography.bodySmall,
+//                overflow = TextOverflow.Clip,
+//                maxLines = 1
+//            )
         }
     }
 }
