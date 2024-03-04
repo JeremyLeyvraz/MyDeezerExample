@@ -41,6 +41,7 @@ class PlayerViewModel  @Inject constructor(
     var isPlaying by savedStateHandle.saveable { mutableStateOf(false) }
     var currentSelectedAudio by savedStateHandle.saveable { mutableStateOf(musicDummy) }
     var musicList by savedStateHandle.saveable { mutableStateOf(listOf<Music>()) }
+    var isServiceEnable by savedStateHandle.saveable { mutableStateOf(false) }
 
     private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Initial)
     val uiState: StateFlow<UIState> = _uiState.asStateFlow()
@@ -55,7 +56,10 @@ class PlayerViewModel  @Inject constructor(
                 when (mediaState) {
                     AudioState.Initial -> _uiState.value = UIState.Initial
                     is AudioState.Buffering -> calculateProgressValue(mediaState.progress)
-                    is AudioState.Playing -> isPlaying = mediaState.isPlaying
+                    is AudioState.Playing ->  {
+                        isPlaying = mediaState.isPlaying
+                        isServiceEnable = true
+                    }
                     is AudioState.Progress -> calculateProgressValue(mediaState.progress)
                     is AudioState.CurrentPlaying -> {
                         currentSelectedAudio = musicList[mediaState.mediaItemIndex]
@@ -141,7 +145,6 @@ class PlayerViewModel  @Inject constructor(
             }
         }
     }
-
 
     fun formatDuration(duration: Long): String {
         val minute = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)

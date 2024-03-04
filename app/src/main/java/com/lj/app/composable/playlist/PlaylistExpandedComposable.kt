@@ -105,10 +105,10 @@ fun PlaylistExpandedComposable(navController: NavController, viewModel: Playlist
 
             if(viewModel.isPlaying.value) {
                 // Display current music player if music is playing
-                RowCurrentMusicPlayerComposable(navController = navController, viewModel = viewModel, modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 8.dp))
+//                RowCurrentMusicPlayerComposable(navController = navController, viewModel = viewModel, modifier = Modifier
+//                    .fillMaxWidth()
+//                    .align(Alignment.BottomCenter)
+//                    .padding(bottom = 8.dp))
             }
         }
     }

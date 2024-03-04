@@ -104,8 +104,8 @@ fun PlaylistMediumComposable(navController: NavController, viewModel: PlaylistVi
         ) {
 
             Spacer(modifier = Modifier.weight(1f))
-            RowCurrentMusicPlayerComposable(navController = navController, viewModel = viewModel, modifier = Modifier
-                .fillMaxWidth())
+//            RowCurrentMusicPlayerComposable(navController = navController, viewModel = viewModel, modifier = Modifier
+//                .fillMaxWidth())
         }
     }
 }

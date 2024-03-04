@@ -27,7 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.lj.app.R
 import com.lj.app.navigation.MUSIC_DESTINATION
-import com.lj.app.viewmodel.PlaylistViewModel
+import com.lj.app.viewmodel.PlayerViewModel
+import com.lj.app.viewmodel.UIEvents
 
 /**
  * A composable function responsible for displaying the current music player in a row layout.
@@ -37,7 +38,7 @@ import com.lj.app.viewmodel.PlaylistViewModel
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: PlaylistViewModel, modifier: Modifier = Modifier) {
+fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: PlayerViewModel, modifier: Modifier = Modifier) {
 
     // Colors for player UI elements
     val playerColor = LocalContext.current.resources.getColor(R.color.purple_700, null)
@@ -57,15 +58,15 @@ fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: Pla
             IconButton(
                 onClick =
                 {
-                    viewModel.pause()
+                    viewModel.onUiEvents(UIEvents.PlayPause)
                 },
                 modifier = Modifier.padding(8.dp)
             ) {
-                var icon = Icons.Default.Pause
-                var description = "Pause"
-                if(viewModel.isPause.value) {
-                    icon = Icons.Default.PlayArrow
-                    description = "Play"
+                var icon = Icons.Default.PlayArrow
+                var description = "Play"
+                if(viewModel.isPlaying) {
+                    icon = Icons.Default.Pause
+                    description = "Pause"
                 }
                 Icon(
                     icon,
@@ -76,7 +77,7 @@ fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: Pla
             }
 
             // Display current music information
-            viewModel.currentMusic.value?.let {
+            viewModel.currentSelectedAudio.let {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
@@ -104,7 +105,7 @@ fun RowCurrentMusicPlayerComposable(navController: NavController, viewModel: Pla
 
             // Next button
             IconButton(
-                onClick = { viewModel.next() },
+                onClick = { viewModel.onUiEvents(UIEvents.SeekToNext) },
                 modifier = Modifier.padding(8.dp)
             ) {
                 Icon(

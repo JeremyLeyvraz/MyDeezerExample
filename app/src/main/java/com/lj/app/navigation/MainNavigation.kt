@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.lj.app.composable.music.MusicComposable
 import com.lj.app.composable.playlist.PlaylistComposable
+import com.lj.app.viewmodel.PlayerViewModel
 import com.lj.app.viewmodel.PlaylistViewModel
 
 const val PLAYLIST_DESTINATION = "playlist"
@@ -24,8 +25,8 @@ fun MainNavigation(windowSizeClass: WindowSizeClass) {
         // Define a composable for the playlist destination
         composable(PLAYLIST_DESTINATION)
         {
-            val viewModel = hiltViewModel<PlaylistViewModel>()
-            viewModel.init(LocalContext.current)
+            val viewModel = hiltViewModel<PlayerViewModel>()
+            viewModel.mContext = LocalContext.current
             PlaylistComposable(windowSizeClass, navController, viewModel)
         }
         // Define a composable for the music destination

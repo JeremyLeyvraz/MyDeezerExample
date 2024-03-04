@@ -39,7 +39,6 @@ object PlayerModule {
         .setTrackSelector(DefaultTrackSelector(context))
         .build()
 
-
     @Provides
     @Singleton
     fun provideMediaSession(

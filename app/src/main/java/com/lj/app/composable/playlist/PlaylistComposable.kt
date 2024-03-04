@@ -4,7 +4,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import com.lj.app.viewmodel.PlaylistViewModel
+import com.lj.app.viewmodel.PlayerViewModel
 
 /**
  * A composable function responsible for displaying the playlist based on the window size class.
@@ -13,7 +13,7 @@ import com.lj.app.viewmodel.PlaylistViewModel
  * @param viewModel The view model containing data for the playlist.
  */
 @Composable
-fun PlaylistComposable(windowSizeClass: WindowSizeClass, navController: NavController, viewModel: PlaylistViewModel) {
+fun PlaylistComposable(windowSizeClass: WindowSizeClass, navController: NavController, viewModel: PlayerViewModel) {
 
     when (windowSizeClass.widthSizeClass) {
         // Compact view for portrait mode on phones
@@ -22,11 +22,11 @@ fun PlaylistComposable(windowSizeClass: WindowSizeClass, navController: NavContr
         }
         // Medium view for portrait mode on tablets
         WindowWidthSizeClass.Medium -> {
-            PlaylistMediumComposable(navController, viewModel)
+            //PlaylistMediumComposable(navController, viewModel)
         }
         // Expanded view for landscape mode on phones and tablets
         WindowWidthSizeClass.Expanded -> {
-            PlaylistExpandedComposable(navController, viewModel)
+            //PlaylistExpandedComposable(navController, viewModel)
         }
     }
 }
