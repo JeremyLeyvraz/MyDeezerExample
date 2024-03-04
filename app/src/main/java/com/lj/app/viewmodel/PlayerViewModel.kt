@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.saveable
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import com.lj.app.R
 import com.lj.app.model.Music
 import com.lj.app.repository.AudioRepository
 import com.lj.app.service.AudioState
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private val musicDummy = Music()
+private val musicDummy = Music(cover = R.drawable.finalfantasy9)
 
 @HiltViewModel
 class PlayerViewModel  @Inject constructor(
@@ -118,8 +119,7 @@ class PlayerViewModel  @Inject constructor(
 
     fun onUiEvents(uiEvents: UIEvents) = viewModelScope.launch {
         when (uiEvents) {
-            UIEvents.Backward -> audioServiceHandler.onPlayerEvents(PlayerEvent.Backward)
-            UIEvents.Forward -> audioServiceHandler.onPlayerEvents(PlayerEvent.Forward)
+            UIEvents.SeekToPrevious -> audioServiceHandler.onPlayerEvents(PlayerEvent.SeekToPrevious)
             UIEvents.SeekToNext -> audioServiceHandler.onPlayerEvents(PlayerEvent.SeekToNext)
             is UIEvents.PlayPause -> {
                 audioServiceHandler.onPlayerEvents(
@@ -170,9 +170,8 @@ sealed class UIEvents {
     object PlayPause : UIEvents()
     data class SelectedAudioChange(val index: Int) : UIEvents()
     data class SeekTo(val position: Float) : UIEvents()
+    object SeekToPrevious : UIEvents()
     object SeekToNext : UIEvents()
-    object Backward : UIEvents()
-    object Forward : UIEvents()
     data class UpdateProgress(val newProgress: Float) : UIEvents()
 }
 

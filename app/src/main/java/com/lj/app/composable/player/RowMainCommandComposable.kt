@@ -34,7 +34,10 @@ fun RowMainCommandComposable(viewModel: PlayerViewModel, modifier: Modifier = Mo
 
         // Previous button
         IconButton(
-            onClick = { viewModel.onUiEvents(UIEvents.Backward) },
+            onClick =
+            {
+                viewModel.onUiEvents(UIEvents.SeekToPrevious)
+            },
             modifier = Modifier
                 .padding(8.dp)
                 .align(Alignment.CenterVertically)

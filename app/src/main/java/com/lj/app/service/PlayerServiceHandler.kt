@@ -42,9 +42,8 @@ class PlayerServiceHandler @Inject constructor(
         seekPosition: Long = 0,
     ) {
         when (playerEvent) {
-            PlayerEvent.Backward -> exoPlayer.seekBack()
-            PlayerEvent.Forward -> exoPlayer.seekForward()
-            PlayerEvent.SeekToNext -> exoPlayer.seekToNext()
+            PlayerEvent.SeekToPrevious -> exoPlayer.seekToPreviousMediaItem()
+            PlayerEvent.SeekToNext -> exoPlayer.seekToNextMediaItem()
             PlayerEvent.PlayPause -> playOrPause()
             PlayerEvent.SeekTo -> exoPlayer.seekTo(seekPosition)
             PlayerEvent.SelectedAudioChange -> {
@@ -126,9 +125,8 @@ class PlayerServiceHandler @Inject constructor(
 sealed class PlayerEvent {
     object PlayPause : PlayerEvent()
     object SelectedAudioChange : PlayerEvent()
-    object Backward : PlayerEvent()
     object SeekToNext : PlayerEvent()
-    object Forward : PlayerEvent()
+    object SeekToPrevious : PlayerEvent()
     object SeekTo : PlayerEvent()
     object Stop : PlayerEvent()
     data class UpdateProgress(val newProgress: Float) : PlayerEvent()
