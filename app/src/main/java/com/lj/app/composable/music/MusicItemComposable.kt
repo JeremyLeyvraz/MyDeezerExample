@@ -50,21 +50,21 @@ fun MusicItemComposable(music: Music, isPlaying: Boolean) {
             .weight(1.0f)) {
 
             // Music title
-//            Text(
-//                text = music.name,
-//                style = MaterialTheme.typography.labelLarge.copy(
-//                    color = textColor,
-//                    fontSize = 20.sp,
-//                )
-//            )
-//            // Artist name
-//            Text(
-//                text = music.artist,
-//                style = MaterialTheme.typography.labelLarge.copy(
-//                    color = textColor,
-//                    fontSize = 14.sp,
-//                )
-//            )
+            Text(
+                text = music.name ?: "unknown",
+                style = MaterialTheme.typography.labelLarge.copy(
+                    color = textColor,
+                    fontSize = 20.sp,
+                )
+            )
+            // Artist name
+            Text(
+                text = music.artist ?: "unknown",
+                style = MaterialTheme.typography.labelLarge.copy(
+                    color = textColor,
+                    fontSize = 14.sp,
+                )
+            )
         }
 
         // Display playing indicator if the music is currently playing

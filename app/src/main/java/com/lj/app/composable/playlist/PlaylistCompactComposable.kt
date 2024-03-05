@@ -44,7 +44,6 @@ fun PlaylistCompactComposable(navController: NavController, viewModel: PlayerVie
 
                 /** TODO: remettre image playlist */
 //                item {
-//
 //                    // Display playlist image
 //                    Surface(modifier = Modifier.fillMaxWidth()) {
 //                        DisplayImage(resourceId = viewModel.image,

@@ -1,6 +1,9 @@
 package com.lj.app
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import androidx.compose.material3.*
 import android.os.Bundle
@@ -19,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.lj.app.navigation.MainNavigation
@@ -34,7 +38,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val viewModel: PlayerViewModel by viewModels()
-    private var isServiceRunning = false
 
     @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,19 +63,37 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
+            viewModel.InitPlaylist(!isServiceRunning())
+            viewModel.InitListener()
+
+            if (!isServiceRunning()) {
+                startService()
+            } else {
+                // Init VM avec etat courant
+                // Recupérer piste courante
+                // Recupérer si pause ou play
+                // Récupérer info temporelle: courant + durée totale
+            }
+
             val windowSizeClass = calculateWindowSizeClass(this)
             MyApp(windowSizeClass = windowSizeClass)
 
-            startService()
         }
     }
 
     private fun startService() {
-        if (!isServiceRunning) {
-            val intent = Intent(this, PlayerService::class.java)
-            startForegroundService(intent)
-            isServiceRunning = true
+        val intent = Intent(this, PlayerService::class.java)
+        startForegroundService(intent)
+    }
+
+    private fun isServiceRunning(): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (PlayerService::class.java.name == service.service.className) {
+                return true
+            }
         }
+        return false
     }
 }
 

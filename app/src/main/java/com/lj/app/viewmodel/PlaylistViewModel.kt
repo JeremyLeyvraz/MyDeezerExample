@@ -41,25 +41,7 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
      */
     val dataResponseReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            if (intent?.action == PlayerService.ACTION_CURRENT_MUSIC_RESULT) {
-                val responseData = intent.getStringExtra("musicId")
-                currentMusicName.value = responseData!!
-                currentMusic.value = getMusics().firstOrNull { it.name == currentMusicName.value }
-            }
-            if (intent?.action == PlayerService.ACTION_DURATION) {
-                val responseData = intent.getLongExtra("duration", 0L)
-                duration.value = responseData
-            }
-            if (intent?.action == PlayerService.ACTION_CURRENT_POSITION) {
-                val responseData = intent.getLongExtra("currentPosition", 0L)
-                currentPosition.value = responseData
-                updateProgress()
-            }
-            if (intent?.action == PlayerService.ACTION_APPLICATION_RESUME_RESULT) {
-                val isPlayingExtra = intent.getBooleanExtra("isPlaying", false)
-                isPlaying.value = currentMusic.value != null
-                isPause.value = !isPlayingExtra
-            }
+
         }
     }
 
@@ -95,13 +77,7 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     fun init(context: Context) {
         this.context = context
-        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_CURRENT_MUSIC_RESULT))
-        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_DURATION))
-        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_CURRENT_POSITION))
-        context.registerReceiver(dataResponseReceiver, IntentFilter(PlayerService.ACTION_APPLICATION_RESUME_RESULT))
-
         val playIntent = Intent(context, PlayerService::class.java)
-        playIntent.action = PlayerService.ACTION_APPLICATION_RESUME
         context.startService(playIntent)
     }
 
@@ -110,7 +86,6 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
      */
     fun play(musicId: String) {
         val playIntent = Intent(context, PlayerService::class.java)
-        playIntent.action = PlayerService.ACTION_PLAY
         playIntent.putExtra("musicId", musicId)
         context?.startService(playIntent)
         isPlaying.value = true
@@ -122,7 +97,6 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
      */
     fun pause() {
         val pauseIntent = Intent(context, PlayerService::class.java)
-        pauseIntent.action = PlayerService.ACTION_PAUSE
         context?.startService(pauseIntent)
         isPause.value = !isPause.value
     }
@@ -132,7 +106,6 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
      */
     fun next() {
         val nextIntent = Intent(context, PlayerService::class.java)
-        nextIntent.action = PlayerService.ACTION_NEXT
         context?.startService(nextIntent)
         isPlaying.value = true
         isPause.value = false
@@ -143,7 +116,6 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
      */
     fun previous() {
         val nextIntent = Intent(context, PlayerService::class.java)
-        nextIntent.action = PlayerService.ACTION_PREVIOUS
         context?.startService(nextIntent)
         isPlaying.value = true
         isPause.value = false
@@ -154,7 +126,6 @@ class PlaylistViewModel @Inject constructor(): ViewModel() {
      */
     fun goTo(value: Float) {
         val playIntent = Intent(context, PlayerService::class.java)
-        playIntent.action = PlayerService.ACTION_GOTO
         playIntent.putExtra("progress", value)
         context?.startService(playIntent)
     }

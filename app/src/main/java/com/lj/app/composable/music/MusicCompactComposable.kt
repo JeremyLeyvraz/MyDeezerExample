@@ -56,26 +56,26 @@ fun MusicCompactComposable(viewModel: PlayerViewModel) {
             Spacer(modifier = Modifier.weight(.5f))
 
             // Music title
-//            Text(
-//                text = it.name,
-//                style = MaterialTheme.typography.labelLarge.copy(
-//                    fontSize = 32.sp,
-//                    color = textColor,
-//                    fontWeight = FontWeight.Bold
-//                ),
-//                modifier = Modifier.align(Alignment.CenterHorizontally)
-//            )
-//
-//            // Artist name
-//            Text(
-//                text = it.artist,
-//                style = MaterialTheme.typography.labelLarge.copy(
-//                    fontSize = 24.sp,
-//                    color = textColor,
-//                    fontWeight = FontWeight.Bold
-//                ),
-//                modifier = Modifier.align(Alignment.CenterHorizontally)
-//            )
+            Text(
+                text = it.name ?: "unknown",
+                style = MaterialTheme.typography.labelLarge.copy(
+                    fontSize = 32.sp,
+                    color = textColor,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+
+            // Artist name
+            Text(
+                text = it.artist ?: "unknown",
+                style = MaterialTheme.typography.labelLarge.copy(
+                    fontSize = 24.sp,
+                    color = textColor,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
 
             Spacer(modifier = Modifier.weight(1f))
 

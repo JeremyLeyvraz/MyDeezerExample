@@ -24,7 +24,12 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-private val musicDummy = Music(cover = R.drawable.finalfantasy9)
+private val musicDummy = Music(
+    name = "default",
+    artist = "default",
+    music = -1,
+    cover = R.drawable.finalfantasy9,
+    guid = "10")
 
 @HiltViewModel
 class PlayerViewModel  @Inject constructor(
@@ -47,11 +52,11 @@ class PlayerViewModel  @Inject constructor(
     private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState.Initial)
     val uiState: StateFlow<UIState> = _uiState.asStateFlow()
 
-    init {
-        loadAudioData()
+    fun InitPlaylist(initPlayer : Boolean) {
+        loadAudioData(initPlayer)
     }
 
-    init {
+    fun InitListener() {
         viewModelScope.launch {
             audioServiceHandler.audioState.collectLatest { mediaState ->
                 when (mediaState) {
@@ -71,21 +76,23 @@ class PlayerViewModel  @Inject constructor(
                     is AudioState.CurrentPlaying -> {
                         currentSelectedAudio = musicList[mediaState.mediaItemIndex]
                     }
-
                     is AudioState.Ready -> {
                         duration = mediaState.duration
                         _uiState.value = UIState.Ready
                     }
+                    else -> {}
                 }
             }
         }
     }
 
-    private fun loadAudioData() {
+    private fun loadAudioData(initPlayer : Boolean) {
         viewModelScope.launch {
             val audio = repository.getAudioData()
             musicList = audio
-            setMediaItems()
+            if(initPlayer) {
+                setMediaItems()
+            }
         }
     }
 
@@ -126,21 +133,18 @@ class PlayerViewModel  @Inject constructor(
                     PlayerEvent.PlayPause
                 )
             }
-
             is UIEvents.SeekTo -> {
                 audioServiceHandler.onPlayerEvents(
                     PlayerEvent.SeekTo,
                     seekPosition = ((duration * uiEvents.position) / 100f).toLong()
                 )
             }
-
             is UIEvents.SelectedAudioChange -> {
                 audioServiceHandler.onPlayerEvents(
                     PlayerEvent.SelectedAudioChange,
                     selectedAudioIndex = uiEvents.index
                 )
             }
-
             is UIEvents.UpdateProgress -> {
                 audioServiceHandler.onPlayerEvents(
                     PlayerEvent.UpdateProgress(
@@ -149,6 +153,8 @@ class PlayerViewModel  @Inject constructor(
                 )
                 progress = uiEvents.newProgress
             }
+
+            else -> {}
         }
     }
 
