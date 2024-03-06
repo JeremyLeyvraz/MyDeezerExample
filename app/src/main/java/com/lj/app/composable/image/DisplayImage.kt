@@ -13,9 +13,15 @@ import androidx.compose.ui.res.painterResource
  */
 @Composable
 fun DisplayImage(@DrawableRes resourceId: Int, modifier: Modifier = Modifier) {
+
+    /**
+     * Crash si resourceId n'existe pas
+     * A faire: mettre une resource par défaut + vérifier l'existance de la resource hors composable + mettre défaut si existe pas
+     */
+
     Image(
         painter = painterResource(id = resourceId),
-        contentDescription = "image",
+        contentDescription = "image"
         modifier = modifier
     )
 }

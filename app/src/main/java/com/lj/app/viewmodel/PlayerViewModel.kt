@@ -41,6 +41,9 @@ class PlayerViewModel  @Inject constructor(
 
     private val repository: AudioRepository = AudioRepository()
 
+    var playlistName by savedStateHandle.saveable { mutableStateOf("Unknown") }
+    var playlistCover by savedStateHandle.saveable { mutableStateOf(0) }
+
     var duration by savedStateHandle.saveable { mutableStateOf(0L) }
     var progress by savedStateHandle.saveable { mutableStateOf(0f) }
     var progressString by savedStateHandle.saveable { mutableStateOf("00:00") }
@@ -88,8 +91,12 @@ class PlayerViewModel  @Inject constructor(
 
     private fun loadAudioData(initPlayer : Boolean) {
         viewModelScope.launch {
+
             val audio = repository.getAudioData()
-            musicList = audio
+            musicList = audio.getPlayList()
+            playlistName = audio.name
+            playlistCover = audio.image
+
             if(initPlayer) {
                 setMediaItems()
             } else {
