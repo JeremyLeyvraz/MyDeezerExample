@@ -92,6 +92,12 @@ class PlayerViewModel  @Inject constructor(
             musicList = audio
             if(initPlayer) {
                 setMediaItems()
+            } else {
+                isServiceEnable = true
+                isPlaying = audioServiceHandler.isPlaying()
+                audioServiceHandler.getCurrentMediaItem().let {
+                    currentSelectedAudio = musicList[it]
+                }
             }
         }
     }

@@ -26,15 +26,21 @@ class PlayerServiceHandler @Inject constructor(
         exoPlayer.addListener(this)
     }
 
-    fun addMediaItem(mediaItem: MediaItem) {
-        exoPlayer.setMediaItem(mediaItem)
-        exoPlayer.prepare()
-    }
-
     fun setMediaItemList(mediaItems: List<MediaItem>) {
         exoPlayer.setMediaItems(mediaItems)
         exoPlayer.prepare()
     }
+
+    /***
+     * Get the current media item ID
+     */
+    fun getCurrentMediaItem(): Int = exoPlayer.currentMediaItemIndex
+
+    /***
+     * True if a media is playing, false otherwise
+     */
+    fun isPlaying(): Boolean = exoPlayer.isPlaying
+
 
     suspend fun onPlayerEvents(
         playerEvent: PlayerEvent,
