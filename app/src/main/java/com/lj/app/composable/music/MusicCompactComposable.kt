@@ -23,9 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.lj.app.R
 import com.lj.app.composable.image.DisplayImage
 import com.lj.app.composable.player.RowMainCommandComposable
-import com.lj.app.converter.formatLongToMinutesSeconds
 import com.lj.app.viewmodel.PlayerViewModel
-import com.lj.app.viewmodel.PlaylistViewModel
 
 /**
  * A composable function responsible for displaying the music in a compact layout.
@@ -87,7 +85,7 @@ fun MusicCompactComposable(viewModel: PlayerViewModel) {
             .padding(start = 16.dp, end = 16.dp)) {
 
             Text(
-                text = formatLongToMinutesSeconds(viewModel.progress.toLong()),
+                text = viewModel.progressString,
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontSize = 12.sp,
                     color = textColor,
@@ -98,7 +96,7 @@ fun MusicCompactComposable(viewModel: PlayerViewModel) {
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = formatLongToMinutesSeconds((viewModel.duration - viewModel.progress).toLong()),
+                text = viewModel.remainingString,
                 style = MaterialTheme.typography.labelLarge.copy(
                     fontSize = 12.sp,
                     color = textColor,

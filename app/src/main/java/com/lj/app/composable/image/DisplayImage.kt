@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import com.lj.app.R
 
 /**
  * Displays an image identified by the provided resource ID.
@@ -12,7 +13,7 @@ import androidx.compose.ui.res.painterResource
  * @param modifier Optional modifier for the image.
  */
 @Composable
-fun DisplayImage(@DrawableRes resourceId: Int, modifier: Modifier = Modifier) {
+fun DisplayImage(@DrawableRes resourceId: Int = R.drawable.unknown, modifier: Modifier = Modifier) {
 
     /**
      * Crash si resourceId n'existe pas
@@ -21,7 +22,7 @@ fun DisplayImage(@DrawableRes resourceId: Int, modifier: Modifier = Modifier) {
 
     Image(
         painter = painterResource(id = resourceId),
-        contentDescription = "image"
+        contentDescription = "image",
         modifier = modifier
     )
 }

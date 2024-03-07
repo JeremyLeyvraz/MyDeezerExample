@@ -42,11 +42,14 @@ class PlayerViewModel  @Inject constructor(
     private val repository: AudioRepository = AudioRepository()
 
     var playlistName by savedStateHandle.saveable { mutableStateOf("Unknown") }
-    var playlistCover by savedStateHandle.saveable { mutableStateOf(0) }
+    var playlistCover by savedStateHandle.saveable { mutableStateOf(R.drawable.unknown) }
 
     var duration by savedStateHandle.saveable { mutableStateOf(0L) }
     var progress by savedStateHandle.saveable { mutableStateOf(0f) }
+
     var progressString by savedStateHandle.saveable { mutableStateOf("00:00") }
+    var remainingString by savedStateHandle.saveable { mutableStateOf("00:00") }
+
     var isPlaying by savedStateHandle.saveable { mutableStateOf(false) }
     var currentSelectedAudio by savedStateHandle.saveable { mutableStateOf(musicDummy) }
     var musicList by savedStateHandle.saveable { mutableStateOf(listOf<Music>()) }
@@ -135,6 +138,7 @@ class PlayerViewModel  @Inject constructor(
             if (currentProgress > 0) ((currentProgress.toFloat() / duration.toFloat()) * 100f)
             else 0f
         progressString = formatDuration(currentProgress)
+        remainingString = formatDuration(duration - currentProgress)
     }
 
     fun onUiEvents(uiEvents: UIEvents) = viewModelScope.launch {
@@ -171,9 +175,10 @@ class PlayerViewModel  @Inject constructor(
         }
     }
 
-    fun formatDuration(duration: Long): String {
-        val minute = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
-        val seconds = (minute) - minute * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES)
+    fun formatDuration(durationInMillis: Long): String {
+        val durationInSeconds = durationInMillis / 1000
+        val minute = TimeUnit.MINUTES.convert(durationInSeconds, TimeUnit.SECONDS)
+        val seconds = (durationInSeconds) - minute * TimeUnit.SECONDS.convert(1, TimeUnit.MINUTES)
         return String.format("%02d:%02d", minute, seconds)
     }
 
