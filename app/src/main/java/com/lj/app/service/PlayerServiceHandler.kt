@@ -2,6 +2,7 @@ package com.lj.app.service
 
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.Player.MEDIA_ITEM_TRANSITION_REASON_AUTO
 import androidx.media3.exoplayer.ExoPlayer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -97,6 +98,16 @@ class PlayerServiceHandler @Inject constructor(
             }
         } else {
             stopProgressUpdate()
+        }
+    }
+
+    /***
+     * When the media item changed
+     */
+    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+        // Auto change: when the media item is ended
+        if (reason == MEDIA_ITEM_TRANSITION_REASON_AUTO) {
+            _audioState.value = AudioState.CurrentPlaying(exoPlayer.currentMediaItemIndex)
         }
     }
 
