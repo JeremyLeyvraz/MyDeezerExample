@@ -24,6 +24,7 @@ import com.lj.app.R
 import com.lj.app.composable.image.DisplayImage
 import com.lj.app.composable.player.RowMainCommandComposable
 import com.lj.app.viewmodel.PlayerViewModel
+import com.lj.app.viewmodel.UIEvents
 
 /**
  * A composable function responsible for displaying the music in a compact layout.
@@ -109,7 +110,7 @@ fun MusicCompactComposable(viewModel: PlayerViewModel) {
         Slider(
             value = viewModel.progress,
             onValueChange = {
-                //viewModel.goTo(it)
+                viewModel.onUiEvents(UIEvents.SeekTo(it))
             },
             valueRange = 0f..100f,
             steps = 100,

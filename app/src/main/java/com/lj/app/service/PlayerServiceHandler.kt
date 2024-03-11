@@ -135,8 +135,6 @@ class PlayerServiceHandler @Inject constructor(
         job?.cancel()
         _audioState.value = AudioState.Playing(isPlaying = false)
     }
-
-
 }
 
 sealed class PlayerEvent {
