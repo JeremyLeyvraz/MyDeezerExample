@@ -3,6 +3,7 @@ package com.lj.app.service
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Player.MEDIA_ITEM_TRANSITION_REASON_AUTO
+import androidx.media3.common.Player.REPEAT_MODE_ALL
 import androidx.media3.exoplayer.ExoPlayer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,6 +26,7 @@ class PlayerServiceHandler @Inject constructor(
 
     init {
         exoPlayer.addListener(this)
+        exoPlayer.repeatMode = REPEAT_MODE_ALL
     }
 
     fun setMediaItemList(mediaItems: List<MediaItem>) {
